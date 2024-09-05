@@ -7,8 +7,8 @@ const Home = () => {
         <div className={styles.backgroundImage}>
             <div className={styles.titleFlex}>
                 <div className={styles.titleText}> 
-                    <h1>Elev<span>ai</span>te Analytics</h1>
-                    <h3>Taking sports analysis to new heights</h3>
+                    <h1>Flarewatch</h1>
+                    <h3>Next Generation Fire Monitoring Tools</h3>
                 </div>
             </div>
         </div>

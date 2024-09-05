@@ -6,7 +6,6 @@ import Dashboard from './pages/Dashboard.jsx';
 import Mapviewer from './pages/Mapviewer.jsx';
 import About from './pages/About.jsx';
 import RootLayout from './RootLayout.jsx';
-import './index.css'
 
 const router = createBrowserRouter([
   {
