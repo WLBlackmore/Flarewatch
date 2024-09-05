@@ -1,0 +1,42 @@
+/*Section 4: Footer*/
+
+.footer{
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    color: #d9f3ee;
+}
+
+.footerFlex{
+    height: 170px;
+    background-image: url('../assets/footer-background.jpg');
+    background-size: cover; 
+    background-position: center center; 
+    background-repeat: no-repeat; 
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+.logo{
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    align-items: center;
+}
+
+.logo>img{
+    width: 190px;
+}
+.logo>h5{
+    margin-top: 15px;
+    margin-left: 5px;
+}
+
+.lineLeft,.lineRight{
+    height: 50px;
+    width: 100px;
+    align-self: center;
+    justify-self: center;
+    margin-top: 50px;
+    border-top-style: solid;
+}
+

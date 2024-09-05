@@ -1,0 +1,36 @@
+nav {
+    background-color: #252525; 
+    color: white;
+    padding: 1em 0;
+    text-align: center;
+  }
+  
+  nav ul {
+    list-style-type: none; 
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center; 
+  }
+  
+  nav ul li {
+    margin: 0 1em; 
+  }
+  
+  nav ul li a {
+    color: white; 
+    text-decoration: none; 
+    font-size: 1.2em;
+    padding: 0.5em 1em;
+  }
+  
+  nav ul li a.active {
+    border-bottom: 2px solid rgb(185, 67, 43); 
+    padding-bottom: 0.3em;
+  }
+  
+  nav ul li a:hover {
+    color: rgb(185, 67, 43); 
+    transition: color 0.3s;
+  }
+  
