@@ -8,7 +8,7 @@ const Home = () => {
             <div className={styles.titleFlex}>
                 <div className={styles.titleText}> 
                     <h1>Flarewatch</h1>
-                    <h3>Next Generation Fire Monitoring Tools</h3>
+                    <h3>A Next Generation Fire Monitoring Tool</h3>
                 </div>
             </div>
         </div>
