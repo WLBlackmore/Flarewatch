@@ -1,10 +1,16 @@
 import React from "react";
+import styles from './Mapviewer.module.css';  
+import MainMap from "../components/MainMap";
+import MainMapSidebar from "../components/MainMapSidebar";  // Import the sidebar
 
 const Mapviewer = () => {
   return (
-    <div>
-      <h1>Welcome to the Wildfire Dashboard</h1>
-      <p>This is the mapviewer page.</p>
+    <div className={styles.mapviewerContainer}>
+      {/* Map section */}
+      <MainMap />
+
+      {/* Sidebar for filters or additional content */}
+      <MainMapSidebar />
     </div>
   );
 };

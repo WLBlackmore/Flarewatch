@@ -1,0 +1,21 @@
+.sidebar {
+    width: 300px;  /* Fixed width for the sidebar */
+    padding: 20px;
+    background-color: #0b0b0b;  /* Sidebar background color */
+    color: white;  /* White text for contrast */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 20px;
+  }
+  
+  .sidebar h2 {
+    color: white;  /* Highlight color from your palette */
+  }
+  
+  .filterSection label {
+    display: block;
+    margin: 10px 0;
+    color: #FFE9DC;  /* Softer text color for readability */
+  }
+  

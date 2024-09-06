@@ -1,0 +1,19 @@
+.mapSection {
+    flex-grow: 1;  /* Map section takes the rest of the screen */
+    background-color: #FFE9DC;  /* Neutral background color */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .mapPlaceholder {
+    width: 90%;  /* Control the width of the map placeholder */
+    height: 84%;  /* Control the height of the map */
+    background-color: grey;  /* Grey placeholder for now */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
