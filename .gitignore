@@ -17,6 +17,7 @@ dist-ssr
 venv
 .env
 .Python
+.env.local
 
 # Editor directories and files
 .vscode/*
