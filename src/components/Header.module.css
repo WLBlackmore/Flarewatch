@@ -1,3 +1,4 @@
+/* General nav styles */
 nav {
   background-color: #252525;
   color: white;
@@ -7,6 +8,7 @@ nav {
   position: relative;
 }
 
+/* Logo link */
 .logoLink {
   display: flex;
   align-items: center;
@@ -15,15 +17,24 @@ nav {
 }
 
 .logo {
-  width: 50px;
+  width: 40px;
   height: auto;
 }
 
-.logoLink:hover svg path, 
-.logoLink.active svg path {
-  fill: rgb(185, 67, 43); /* This will work as expected now */
+/* Default color for logo with transition effect */
+.logoLink svg path {
+  fill: white; /* Default color for the logo */
+  transition: fill 0.3s; /* Smooth transition for fill color change */
 }
 
+/* Hover and active state for logo */
+.logoLink:hover svg path, 
+.logoLink.active svg path {
+  fill: rgb(185, 67, 43); /* Hover and active color */
+}
+
+
+/* Nav items (other links) */
 .navItems {
   list-style-type: none;
   padding: 0;
@@ -37,15 +48,17 @@ nav {
   margin: 0 1em;
 }
 
+/* Default color for nav links */
 .navItems li a {
-  color: white;
+  color: white; /* Default color for nav links */
   text-decoration: none;
   font-size: 1.2em;
   padding: 0.5em 1em;
+  transition: color 0.3s; /* Smooth transition for color change */
 }
 
+/* Hover and active state for nav links */
 .navItems li a:hover,
 .navItems li a.active {
-  color: rgb(185, 67, 43);
-  transition: color 0.3s;
+  color: rgb(185, 67, 43); /* Hover and active color for nav links */
 }

@@ -22,9 +22,11 @@
     align-items: center;
 }
 
-.logo>img{
+.logo > img {
     width: 50px;
-}
+    filter: brightness(0) invert(1); /* This will turn the logo white */
+  }
+  
 .logo>h5{
     margin-top: 15px;
     margin-left: 5px;
