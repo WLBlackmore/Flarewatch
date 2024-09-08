@@ -33,3 +33,5 @@ venv
 # Other generated files
 *.pyc
 __pycache__/
+
+public/data/
