@@ -23,12 +23,12 @@ const MainMap = () => {
    // Load GeoJSON files when component mounts
    useEffect(() => {
     // Load Centroids GeoJSON
-    fetch("../data/NASA_GEO/Layer_375m_Fire_Detection_Centroids_Last_0_to_6hrs.geojson")
+    fetch("/data/NASA_GEO/375m_Fire_Detection_Centroids_(Last_0_to_6hrs).geojson")
       .then(response => response.json())
       .then(data => setCentroidData(data));
 
     // Load Footprints GeoJSON
-    fetch("../data/NASA_GEO/Layer_375m_Fire_Detection_Footprints_Last_0_to_6hrs.geojson")
+    fetch("/data/NASA_GEO/375m_Fire_Detection_Footprints_(Last_0_to_6hrs).geojson")
       .then(response => response.json())
       .then(data => setFootprintData(data));
   }, []);
