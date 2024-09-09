@@ -1,19 +1,27 @@
 import React from "react";
-import styles from './MainMapSidebar.module.css';  // Sidebar-specific styles
+import styles from "./MainMapSidebar.module.css"; // Sidebar-specific styles
 
-const MainMapSidebar = () => {
+const MainMapSidebar = ({ showFRP, setShowFRP, showBrightness, setShowBrightness }) => {
   return (
     <div className={styles.sidebar}>
       <h2>Tool Bar</h2>
       <div className={styles.filterSection}>
         <p>Filter Options</p>
         <label>
-          <input type="checkbox" />
-          Show Wildfires
+          <input
+            type="checkbox"
+            checked={showFRP}
+            onChange={() => setShowFRP(!showFRP)}
+          />
+          Show FRP Markers
         </label>
         <label>
-          <input type="checkbox" />
-          Show Smoke Layer
+          <input
+            type="checkbox"
+            checked={showBrightness}
+            onChange={() => setShowBrightness(!showBrightness)}
+          />
+          Show Brightness Heatmap
         </label>
       </div>
     </div>
