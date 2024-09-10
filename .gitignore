@@ -37,3 +37,7 @@ __pycache__/
 public/data/
 
 flask-backend/test/
+
+*_geojson
+
+kml_cache/

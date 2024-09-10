@@ -76,7 +76,7 @@ def kml_to_geojson(kml_file_path, output_dir):
 
         print(f"Saved GeoJSON: {geojson_output_path}")
 
-# Example usage
-kml_file_path = "SUOMI_VIIRS_C2_Canada_24h_1725740940864.kml"  # Path to your KML file
-output_dir = "./test"  # Output directory for GeoJSON files
-kml_to_geojson(kml_file_path, output_dir)
+# # Example usage
+# kml_file_path = "SUOMI_VIIRS_C2_Canada_24h_1725740940864.kml"  # Path to your KML file
+# output_dir = "./test"  # Output directory for GeoJSON files
+# kml_to_geojson(kml_file_path, output_dir)
