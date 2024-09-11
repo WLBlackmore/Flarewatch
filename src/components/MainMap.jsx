@@ -135,44 +135,44 @@ const MainMap = ({ showFRP, showBrightness }) => {
                   "heatmap-weight": [
                     "interpolate",
                     ["linear"],
-                    ["to-number", ["slice", ["get", "Brightness"], 0, -2]], // Strip " K"
+                    ["to-number", ["slice", ["get", "Brightness"], 0, -2]],
                     208,
-                    0,
+                    0.2, // Low brightness still contributes, but weakly
                     367,
-                    1,
+                    0.8, // High brightness contributes more strongly
                   ],
                   "heatmap-intensity": [
                     "interpolate",
                     ["linear"],
                     ["zoom"],
                     0,
-                    1,
+                    0.8, // Slightly stronger intensity at lower zoom levels
                     10,
-                    3,
+                    2, // Moderate intensity at higher zoom
                   ],
                   "heatmap-color": [
                     "interpolate",
                     ["linear"],
                     ["heatmap-density"],
                     0,
-                    "rgba(33,102,172,0)", // Light blue
+                    "rgba(33,102,172,0)", // Transparent at low density
                     0.2,
-                    "rgb(103,169,207)", // Blue
+                    "rgb(103,169,207)", // Blue at medium-low density
                     0.4,
-                    "rgb(253,219,199)", // Yellow to Orange
+                    "rgb(253,219,199)", // Yellow to orange at medium density
                     0.6,
-                    "rgb(239,138,98)", // Orange to Red
+                    "rgb(239,138,98)", // Orange at higher density
                     1,
-                    "rgb(178,24,43)", // Dark Red
+                    "rgb(178,24,43)", // Dark red at very high density
                   ],
                   "heatmap-radius": [
                     "interpolate",
                     ["linear"],
                     ["zoom"],
                     0,
-                    2,
+                    3, // Increase the radius slightly at lower zoom levels to show more spread
                     9,
-                    20,
+                    18, // Larger spread at higher zoom levels
                   ],
                 }}
               />
