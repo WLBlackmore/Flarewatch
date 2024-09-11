@@ -38,6 +38,7 @@ public/data/
 
 flask-backend/test/
 
-*_geojson
+canada_*
+usa_*
 
 kml_cache/

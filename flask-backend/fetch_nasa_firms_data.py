@@ -49,24 +49,43 @@ def fetch_nasa_firms_viirs_data(region, datespan, sensor):
     
 
 def process_nasa_firms_data():
+    # Parameter list
+    api_parameter_list = []
+
     # Canada region, 24-hour data, VIIRS sensor
     region = "canada"
     datespan = "24h"
     sensor = "suomi-npp-viirs-c2"
+    canada_parameters = (region, datespan, sensor)
+    api_parameter_list.append(canada_parameters)
 
-    # Fetch the NASA FIRMS VIIRS data
-    kml_file_path = fetch_nasa_firms_viirs_data(region, datespan, sensor)
+    # USA region, 24-hour data, VIIRS sensor
+    region = "usa_contiguous_and_hawaii"
+    datespan = "24h"
+    sensor = "suomi-npp-viirs-c2"
+    usa_parameters = (region, datespan, sensor)
+    api_parameter_list.append(usa_parameters)
 
-    if kml_file_path:
+    if not api_parameter_list:
+        print("No parameters found.")
+        return
+
+    # Loop through each set of parameters
+    for parameters in api_parameter_list:
+        region, datespan, sensor = parameters
+
+        print(f"Processing NASA FIRMS data for {region} region, {datespan} datespan, {sensor} sensor...")
+
+        # Fetch NASA FIRMS data
+        kml_file_path = fetch_nasa_firms_viirs_data(region, datespan, sensor)
+        
         # Convert the KML data to GeoJSON
-        output_dir = f"{region}_{datespan}_{sensor}_geojson"
+        output_dir = f"{region}_{datespan}_{sensor}_data"
         kml_to_geojson_parser.kml_to_geojson(kml_file_path, output_dir)
 
         # After converting the KML data to GeoJSON, remove the KML file
         os.remove(kml_file_path)
         print(f"Removed KML: {kml_file_path}")
-    else:
-        print("Failed to fetch NASA FIRMS data")
     
 # Process the NASA FIRMS data
 process_nasa_firms_data()    

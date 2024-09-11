@@ -70,7 +70,7 @@ def kml_to_geojson(kml_file_path, output_dir):
 
         # Save the GeoJSON for each folder/layer
         feature_collection = geojson.FeatureCollection(features)
-        geojson_output_path = os.path.join(output_dir, f"{folder_name.replace(' ', '_')}.geojson")
+        geojson_output_path = os.path.join(output_dir, f"{output_dir}_{folder_name.replace(' ', '_')}.geojson")
         with open(geojson_output_path, 'w') as geojson_file:
             geojson.dump(feature_collection, geojson_file, indent=2)
 

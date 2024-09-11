@@ -37,15 +37,21 @@ const MainMap = ({ showFRP, showBrightness }) => {
     };
 
     const centroidFileNames = [
-      "375m_Fire_Detection_Centroids_(Last_0_to_6hrs).geojson",
-      "375m_Fire_Detection_Centroids_(Last_6_to_12hrs).geojson",
-      "375m_Fire_Detection_Centroids_(Last_12_to_24hrs).geojson",
+      "canada_24h_suomi-npp-viirs-c2_data_375m_Fire_Detection_Centroids_(Last_0_to_6hrs).geojson",
+      "canada_24h_suomi-npp-viirs-c2_data_375m_Fire_Detection_Centroids_(Last_6_to_12hrs).geojson",
+      "canada_24h_suomi-npp-viirs-c2_data_375m_Fire_Detection_Centroids_(Last_12_to_24hrs).geojson",
+      "usa_contiguous_and_hawaii_24h_suomi-npp-viirs-c2_data_375m_Fire_Detection_Centroids_(Last_0_to_6hrs).geojson",
+      "usa_contiguous_and_hawaii_24h_suomi-npp-viirs-c2_data_375m_Fire_Detection_Centroids_(Last_6_to_12hrs).geojson",
+      "usa_contiguous_and_hawaii_24h_suomi-npp-viirs-c2_data_375m_Fire_Detection_Centroids_(Last_12_to_24hrs).geojson",
     ];
 
     const footprintFileNames = [
-      "375m_Fire_Detection_Footprints_(Last_0_to_6hrs).geojson",
-      "375m_Fire_Detection_Footprints_(Last_6_to_12hrs).geojson",
-      "375m_Fire_Detection_Footprints_(Last_12_to_24hrs).geojson",
+      "canada_24h_suomi-npp-viirs-c2_data_375m_Fire_Detection_Footprints_(Last_0_to_6hrs).geojson",
+      "canada_24h_suomi-npp-viirs-c2_data_375m_Fire_Detection_Footprints_(Last_6_to_12hrs).geojson",
+      "canada_24h_suomi-npp-viirs-c2_data_375m_Fire_Detection_Footprints_(Last_12_to_24hrs).geojson",
+      "usa_contiguous_and_hawaii_24h_suomi-npp-viirs-c2_data_375m_Fire_Detection_Footprints_(Last_0_to_6hrs).geojson",
+      "usa_contiguous_and_hawaii_24h_suomi-npp-viirs-c2_data_375m_Fire_Detection_Footprints_(Last_6_to_12hrs).geojson",
+      "usa_contiguous_and_hawaii_24h_suomi-npp-viirs-c2_data_375m_Fire_Detection_Footprints_(Last_12_to_24hrs).geojson",
     ];
 
     fetchGeoJsonData(centroidFileNames).then(setCentroidData);
