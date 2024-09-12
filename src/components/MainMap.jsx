@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styles from "./MainMap.module.css";
 import ReactMapGL, { Source, Layer, Popup } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
+import axios from "axios";
 
 const MainMap = ({ showFRP, showBrightness }) => {
   // Mapbox Configuration
@@ -39,7 +40,9 @@ const MainMap = ({ showFRP, showBrightness }) => {
   useEffect(() => {
     const fetchGeoJsonData = async (fileNames) => {
       const geoJsonPromises = fileNames.map((fileName) =>
-        fetch(`/data/NASA_GEO/${fileName}`).then((response) => response.json())
+        axios
+          .get(`/data/NASA_GEO/${fileName}`)
+          .then((response) => response.data)
       );
 
       const geoJsonDataArray = await Promise.all(geoJsonPromises);
@@ -230,6 +233,11 @@ const MainMap = ({ showFRP, showBrightness }) => {
                   Scan Dimension {selectedFeature.Scan} x{" "}
                   {selectedFeature.Track}
                 </p>
+                <div className={styles.popupButtonContainer}>
+                  <button className={styles.stationButton}>
+                    Find nearest fire stations
+                  </button>
+                </div>
               </div>
             </Popup>
           )}
