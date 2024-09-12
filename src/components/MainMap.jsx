@@ -36,6 +36,25 @@ const MainMap = ({ showFRP, showBrightness }) => {
     }
   };
 
+  // Fire station
+  const handleFindFireStations = async () => {
+    console.log("Finding nearest 5 fire stations")
+    console.log(selectedFeature)
+    // Add request to flask
+    
+    try {
+      const response = await axios.post("http://localhost:5000/find-fire-stations", {
+        latitude: selectedFeature.Latitude,
+        longitude: selectedFeature.Longitude,
+    });
+    
+      console.log(response.data);
+    }
+    catch (error) {
+      console.error(error);
+    }
+  }
+
   // Fetch and load the GeoJSON data on component mount
   useEffect(() => {
     const fetchGeoJsonData = async (fileNames) => {
@@ -234,7 +253,7 @@ const MainMap = ({ showFRP, showBrightness }) => {
                   {selectedFeature.Track}
                 </p>
                 <div className={styles.popupButtonContainer}>
-                  <button className={styles.stationButton}>
+                  <button className={styles.stationButton} onClick={handleFindFireStations}>
                     Find nearest fire stations
                   </button>
                 </div>
