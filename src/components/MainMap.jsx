@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import styles from "./MainMap.module.css";
-import ReactMapGL, { Source, Layer } from "react-map-gl";
+import ReactMapGL, { Source, Layer, Popup } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 
 const MainMap = ({ showFRP, showBrightness }) => {
+  // Mapbox Configuration
   const mapApiToken = import.meta.env.VITE_MAPBOX_TOKEN;
 
   const [viewport, setViewport] = useState({
@@ -14,9 +15,27 @@ const MainMap = ({ showFRP, showBrightness }) => {
     height: "100%",
   });
 
+  // Data state
   const [centroidData, setCentroidData] = useState(null);
   const [footprintData, setFootprintData] = useState(null);
 
+  // Popups state
+  const [selectedFeature, setSelectedFeature] = useState(null);
+
+  const handleMapClick = (evt) => {
+    // Ensure that features exist and are iterable
+    if (evt.features && evt.features.length > 0) {
+      const [feature] = evt.features;
+      if (feature) {
+        console.log(feature.properties);
+        setSelectedFeature(feature.properties);
+      }
+    } else {
+      console.log("No features found at clicked location");
+    }
+  };
+
+  // Fetch and load the GeoJSON data on component mount
   useEffect(() => {
     const fetchGeoJsonData = async (fileNames) => {
       const geoJsonPromises = fileNames.map((fileName) =>
@@ -36,6 +55,7 @@ const MainMap = ({ showFRP, showBrightness }) => {
       };
     };
 
+    // Define the GeoJSON file names to fetch
     const centroidFileNames = [
       "canada_24h_suomi-npp-viirs-c2_data_375m_Fire_Detection_Centroids_(Last_0_to_6hrs).geojson",
       "canada_24h_suomi-npp-viirs-c2_data_375m_Fire_Detection_Centroids_(Last_6_to_12hrs).geojson",
@@ -54,6 +74,7 @@ const MainMap = ({ showFRP, showBrightness }) => {
       "usa_contiguous_and_hawaii_24h_suomi-npp-viirs-c2_data_375m_Fire_Detection_Footprints_(Last_12_to_24hrs).geojson",
     ];
 
+    // Fetch and set the data
     fetchGeoJsonData(centroidFileNames).then(setCentroidData);
     fetchGeoJsonData(footprintFileNames).then(setFootprintData);
   }, []);
@@ -67,6 +88,12 @@ const MainMap = ({ showFRP, showBrightness }) => {
           mapStyle="mapbox://styles/mapbox/dark-v10"
           onMove={(evt) => setViewport(evt.viewState)}
           projection="globe"
+          onClick={handleMapClick}
+          interactiveLayerIds={[
+            "centroids-layer",
+            "footprints-layer",
+            "centroids-heatmap-layer",
+          ]}
         >
           {/* Display FRP footprints */}
           {showFRP && footprintData && (
@@ -102,6 +129,9 @@ const MainMap = ({ showFRP, showBrightness }) => {
                 type="circle"
                 paint={{
                   "circle-radius": 6,
+                  "circle-stroke-width": 4,
+                  "circle-stroke-color": "#000000",
+                  "circle-stroke-opacity": 0,
                   "circle-color": [
                     "interpolate",
                     ["linear"],
@@ -177,6 +207,31 @@ const MainMap = ({ showFRP, showBrightness }) => {
                 }}
               />
             </Source>
+          )}
+
+          {/* Popup logic */}
+          {selectedFeature && (
+            <Popup
+              latitude={selectedFeature.Latitude}
+              longitude={selectedFeature.Longitude}
+              onClose={() => setSelectedFeature(null)}
+              closeOnClick={false}
+            >
+              <div>
+                <h2>Fire Report</h2>
+                <p>Latitude {selectedFeature.Latitude}</p>
+                <p>Longitude {selectedFeature.Longitude}</p>
+                <p>Fire Radiative Power {selectedFeature.FRP}</p>
+                <p>Brightness {selectedFeature.Brightness}</p>
+                <p>Detection Time {selectedFeature["Detection Time"]}</p>
+                <p>Satelitte {selectedFeature.Sensor}</p>
+                <p>Confidence {selectedFeature.Confidence}</p>
+                <p>
+                  Scan Dimension {selectedFeature.Scan} x{" "}
+                  {selectedFeature.Track}
+                </p>
+              </div>
+            </Popup>
           )}
         </ReactMapGL>
       </div>
