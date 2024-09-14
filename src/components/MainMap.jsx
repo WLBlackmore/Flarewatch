@@ -5,6 +5,7 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import axios from "axios";
 import fireStationIcon from "../assets/firestationicon.png";
 import FireReportPopup from "./FireReportPopup";
+import FireStationPopup from "./FireStationPopup";
 
 const MainMap = ({ showFRP, showBrightness }) => {
   // Mapbox Configuration
@@ -22,11 +23,14 @@ const MainMap = ({ showFRP, showBrightness }) => {
   const [centroidData, setCentroidData] = useState(null);
   const [footprintData, setFootprintData] = useState(null);
 
-  // Popups state
-  const [selectedFeature, setSelectedFeature] = useState(null);
+  // Popups state for fire reports
+  const [selectedFire, setSelectedFire] = useState(null);
 
   // Nearest fire station state
   const [nearestFireStations, setNearestFireStations] = useState(null);
+
+  // Popups state for selected fire station
+  const [selectedFireStation, setSelectedFireStation] = useState(null);
 
   // Reference to the map instance
   const mapRef = useRef(null);
@@ -36,8 +40,18 @@ const MainMap = ({ showFRP, showBrightness }) => {
     if (evt.features && evt.features.length > 0) {
       const [feature] = evt.features;
       if (feature) {
-        console.log(feature.properties);
-        setSelectedFeature(feature.properties);
+        // Check the layer of the clicked feature
+        if (
+          feature.layer.id === "centroids-layer" ||
+          feature.layer.id === "footprints-layer" ||
+          feature.layer.id === "centroids-heatmap-layer"
+        ) {
+          setSelectedFire(feature.properties);
+          console.log("Selected fire:", feature.properties);
+        } else if (feature.layer.id === "nearest-fire-stations-layer") {
+          setSelectedFireStation(feature.properties);
+          console.log("Selected fire station:", feature.properties);
+        }
       }
     } else {
       console.log("No features found at clicked location");
@@ -47,14 +61,14 @@ const MainMap = ({ showFRP, showBrightness }) => {
   // Fire station
   const handleFindFireStations = async () => {
     console.log("Finding nearest 5 fire stations");
-    console.log(selectedFeature);
+    console.log(selectedFire);
     // Add request to flask
 
     try {
       const response = await axios
         .post("http://localhost:5000/find-fire-stations", {
-          latitude: selectedFeature.Latitude,
-          longitude: selectedFeature.Longitude,
+          latitude: selectedFire.Latitude,
+          longitude: selectedFire.Longitude,
         })
         .then((response) => response.data);
       setNearestFireStations(response);
@@ -280,17 +294,34 @@ const MainMap = ({ showFRP, showBrightness }) => {
             </Source>
           )}
 
-          {/* Popup logic */}
-          {selectedFeature && (
+          {/* Fire popup logic */}
+          {selectedFire && (
             <Popup
-              latitude={selectedFeature.Latitude}
-              longitude={selectedFeature.Longitude}
-              onClose={() => setSelectedFeature(null)}
+              latitude={selectedFire.Latitude}
+              longitude={selectedFire.Longitude}
+              onClose={() => setSelectedFire(null)}
               closeOnClick={false}
             >
-              <FireReportPopup fire={selectedFeature} handleFindFireStations={handleFindFireStations}/>
+              <FireReportPopup
+                fire={selectedFire}
+                handleFindFireStations={handleFindFireStations}
+              />
             </Popup>
           )}
+
+          {/* Fire station popup logic */}
+          {selectedFireStation && (
+            <Popup
+              latitude={selectedFireStation.latitude}
+              longitude={selectedFireStation.longitude}
+              onClose={() => setSelectedFireStation(null)}
+              closeOnClick={false}
+            >
+              <FireStationPopup fireStation={selectedFireStation} />
+              </Popup>
+          )}
+
+          
         </ReactMapGL>
       </div>
     </div>

@@ -8,6 +8,8 @@ def osm_to_geojson(osm_data):
         if element['type'] == 'node':
             point = geojson.Point((element['lon'], element['lat']))
             properties = element.get('tags', {})
+            properties['longitude'] = element['lon']  # Store longitude as a property
+            properties['latitude'] = element['lat']  # Store latitude as a property
             feature = geojson.Feature(geometry=point, properties=properties)
             features.append(feature)
 
@@ -28,10 +30,11 @@ def osm_to_geojson(osm_data):
                     geometry = geojson.LineString(coordinates)
                 
                 properties = element.get('tags', {})
+                properties['longitude'] = coordinates[0][0]  # Store longitude of the first coordinate as a property
+                properties['latitude'] = coordinates[0][1]  # Store latitude of the first coordinate as a property
                 feature = geojson.Feature(geometry=geometry, properties=properties)
                 features.append(feature)
 
     # Create a FeatureCollection
     feature_collection = geojson.FeatureCollection(features)
     return feature_collection
-
