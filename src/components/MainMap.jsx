@@ -4,6 +4,7 @@ import ReactMapGL, { Source, Layer, Popup } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import axios from "axios";
 import fireStationIcon from "../assets/firestationicon.png";
+import FireReportPopup from "./FireReportPopup";
 
 const MainMap = ({ showFRP, showBrightness }) => {
   // Mapbox Configuration
@@ -287,28 +288,7 @@ const MainMap = ({ showFRP, showBrightness }) => {
               onClose={() => setSelectedFeature(null)}
               closeOnClick={false}
             >
-              <div>
-                <h2>Fire Report</h2>
-                <p>Latitude {selectedFeature.Latitude}</p>
-                <p>Longitude {selectedFeature.Longitude}</p>
-                <p>Fire Radiative Power {selectedFeature.FRP}</p>
-                <p>Brightness {selectedFeature.Brightness}</p>
-                <p>Detection Time {selectedFeature["Detection Time"]}</p>
-                <p>Satellite {selectedFeature.Sensor}</p>
-                <p>Confidence {selectedFeature.Confidence}</p>
-                <p>
-                  Scan Dimension {selectedFeature.Scan} x{" "}
-                  {selectedFeature.Track}
-                </p>
-                <div className={styles.popupButtonContainer}>
-                  <button
-                    className={styles.stationButton}
-                    onClick={handleFindFireStations}
-                  >
-                    Find nearest fire stations
-                  </button>
-                </div>
-              </div>
+              <FireReportPopup fire={selectedFeature} handleFindFireStations={handleFindFireStations}/>
             </Popup>
           )}
         </ReactMapGL>
