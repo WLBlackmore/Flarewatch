@@ -3,7 +3,7 @@ import styles from "./MainMap.module.css";
 import ReactMapGL, { Source, Layer, Popup } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import axios from "axios";
-import fireTruckIcon from "../assets/firetruckicon.png";
+import fireStationIcon from "../assets/firestationicon.png";
 
 const MainMap = ({ showFRP, showBrightness }) => {
   // Mapbox Configuration
@@ -26,6 +26,9 @@ const MainMap = ({ showFRP, showBrightness }) => {
 
   // Nearest fire station state
   const [nearestFireStations, setNearestFireStations] = useState(null);
+
+  // Reference to the map instance
+  const mapRef = useRef(null);
 
   const handleMapClick = (evt) => {
     // Ensure that features exist and are iterable
@@ -106,6 +109,25 @@ const MainMap = ({ showFRP, showBrightness }) => {
     fetchGeoJsonData(footprintFileNames).then(setFootprintData);
   }, []);
 
+  // Function to handle map load event
+  const handleMapLoad = (event) => {
+    const map = event.target;
+
+    // Store the map instance for later use
+    mapRef.current = map;
+
+    // Add the firetruck icon to the map
+    if (!map.hasImage("firetruck-icon")) {
+      map.loadImage(fireStationIcon, (error, image) => {
+        if (error) {
+          console.error("Error loading firetruck icon:", error);
+          return;
+        }
+        map.addImage("firetruck-icon", image);
+      });
+    }
+  };
+
   return (
     <div className={styles.mapSection}>
       <div className={styles.mapPlaceholder}>
@@ -116,6 +138,7 @@ const MainMap = ({ showFRP, showBrightness }) => {
           onMove={(evt) => setViewport(evt.viewState)}
           projection="globe"
           onClick={handleMapClick}
+          onLoad={handleMapLoad}
           interactiveLayerIds={[
             "centroids-layer",
             "footprints-layer",
@@ -249,7 +272,7 @@ const MainMap = ({ showFRP, showBrightness }) => {
                 type="symbol"
                 layout={{
                   "icon-image": "firetruck-icon",
-                  "icon-size": 0.5,
+                  "icon-size": 0.05,
                   "icon-allow-overlap": true,
                 }}
               />
@@ -271,7 +294,7 @@ const MainMap = ({ showFRP, showBrightness }) => {
                 <p>Fire Radiative Power {selectedFeature.FRP}</p>
                 <p>Brightness {selectedFeature.Brightness}</p>
                 <p>Detection Time {selectedFeature["Detection Time"]}</p>
-                <p>Satelitte {selectedFeature.Sensor}</p>
+                <p>Satellite {selectedFeature.Sensor}</p>
                 <p>Confidence {selectedFeature.Confidence}</p>
                 <p>
                   Scan Dimension {selectedFeature.Scan} x{" "}
