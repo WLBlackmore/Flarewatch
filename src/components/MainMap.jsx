@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styles from "./MainMap.module.css";
 import ReactMapGL, { Source, Layer, Popup } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import axios from "axios";
+import fireTruckIcon from "../assets/firetruckicon.png";
 
 const MainMap = ({ showFRP, showBrightness }) => {
   // Mapbox Configuration
@@ -16,12 +17,15 @@ const MainMap = ({ showFRP, showBrightness }) => {
     height: "100%",
   });
 
-  // Data state
+  // NASA Fire Data
   const [centroidData, setCentroidData] = useState(null);
   const [footprintData, setFootprintData] = useState(null);
 
   // Popups state
   const [selectedFeature, setSelectedFeature] = useState(null);
+
+  // Nearest fire station state
+  const [nearestFireStations, setNearestFireStations] = useState(null);
 
   const handleMapClick = (evt) => {
     // Ensure that features exist and are iterable
@@ -38,22 +42,23 @@ const MainMap = ({ showFRP, showBrightness }) => {
 
   // Fire station
   const handleFindFireStations = async () => {
-    console.log("Finding nearest 5 fire stations")
-    console.log(selectedFeature)
+    console.log("Finding nearest 5 fire stations");
+    console.log(selectedFeature);
     // Add request to flask
-    
+
     try {
-      const response = await axios.post("http://localhost:5000/find-fire-stations", {
-        latitude: selectedFeature.Latitude,
-        longitude: selectedFeature.Longitude,
-    });
-    
-      console.log(response.data);
-    }
-    catch (error) {
+      const response = await axios
+        .post("http://localhost:5000/find-fire-stations", {
+          latitude: selectedFeature.Latitude,
+          longitude: selectedFeature.Longitude,
+        })
+        .then((response) => response.data);
+      setNearestFireStations(response);
+      console.log(nearestFireStations);
+    } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   // Fetch and load the GeoJSON data on component mount
   useEffect(() => {
@@ -115,6 +120,7 @@ const MainMap = ({ showFRP, showBrightness }) => {
             "centroids-layer",
             "footprints-layer",
             "centroids-heatmap-layer",
+            "nearest-fire-stations-layer",
           ]}
         >
           {/* Display FRP footprints */}
@@ -231,6 +237,25 @@ const MainMap = ({ showFRP, showBrightness }) => {
             </Source>
           )}
 
+          {/* Display nearest fire stations */}
+          {nearestFireStations && (
+            <Source
+              id="nearest-fire-stations-source"
+              type="geojson"
+              data={nearestFireStations}
+            >
+              <Layer
+                id="nearest-fire-stations-layer"
+                type="symbol"
+                layout={{
+                  "icon-image": "firetruck-icon",
+                  "icon-size": 0.5,
+                  "icon-allow-overlap": true,
+                }}
+              />
+            </Source>
+          )}
+
           {/* Popup logic */}
           {selectedFeature && (
             <Popup
@@ -253,7 +278,10 @@ const MainMap = ({ showFRP, showBrightness }) => {
                   {selectedFeature.Track}
                 </p>
                 <div className={styles.popupButtonContainer}>
-                  <button className={styles.stationButton} onClick={handleFindFireStations}>
+                  <button
+                    className={styles.stationButton}
+                    onClick={handleFindFireStations}
+                  >
                     Find nearest fire stations
                   </button>
                 </div>

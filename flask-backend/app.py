@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 import requests
+import osm_to_geojson
 
 app = Flask(__name__)
 CORS(app)
@@ -28,18 +29,22 @@ def find_fire_stations():
     """
 
     overpass_response = requests.post(overpass_url, data={'data': overpass_query})
-    data = overpass_response.json()
-    fire_stations = data['elements']
+    osm_data = overpass_response.json()
+    fire_stations = osm_data['elements']
+
+    for station in fire_stations:
+        print(station)
 
     # if no fire stations found, let the user know
     if len(fire_stations) == 0:
         return jsonify({'message': 'No fire stations found'})
+    else:
+        # Convert OSM data to GeoJSON
+        geojson_data = osm_to_geojson.osm_to_geojson(osm_data)
+        return jsonify(geojson_data)
 
-    for fire_station in fire_stations:
-        print(fire_station)
 
-
-    return jsonify({'message': 'Fire stations found'})
+    
 
 
 
