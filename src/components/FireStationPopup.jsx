@@ -4,9 +4,9 @@ const FireStationPopup = (props) => {
     return (
         <div>
             <h2>Fire Station</h2>
-            <p>Latitude {fireStation.latitude}</p>
-            <p>Longitude {fireStation.longitude}</p>
-            {fireStation.name && <p>Name {fireStation.name}</p>}
+            <p>Latitude: {fireStation.latitude}</p>
+            <p>Longitude: {fireStation.longitude}</p>
+            {fireStation.name && <p>Name: {fireStation.name}</p>}
         </div>
     );
 }
