@@ -2,9 +2,14 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 import requests
 import osm_to_geojson
+from dotenv import load_dotenv
+import os
 
 app = Flask(__name__)
 CORS(app)
+load_dotenv()
+
+mapbox_token = os.getenv('MAPBOX_TOKEN')
 
 @app.route('/')
 def hello_world():
@@ -47,9 +52,25 @@ def find_fire_stations():
 @app.route('/find-route', methods=['POST'])
 def find_route():
     data = request.get_json()
-    print("Hit found route")
-    return jsonify({'message': 'test'})
+    station_latitude = data['stationCordinates']['latitude']
+    station_longitude = data['stationCordinates']['longitude']
+    fire_latitude = data['fireCoordinates']['latitude']
+    fire_longitude = data['fireCoordinates']['longitude']
 
+    # Build Mapbox Directions API request
+    directions_url = "https://api.mapbox.com/directions/v5/mapbox/driving"
+    coords = f"{station_longitude},{station_latitude};{fire_longitude},{fire_latitude}"
+    request_string = f"{directions_url}/{coords}?geometries=geojson&access_token={mapbox_token}"
+
+    # Fetch route data from Mapbox Directions API
+    try:
+        response = requests.get(request_string)
+        response.raise_for_status()
+        route_data = response.json()
+        return jsonify(route_data)
+    except requests.exceptions.HTTPError as err:
+        print(f"HTTP error occurred: {err}")
+        return jsonify({'message': 'Error fetching route data'})
 
 
 if __name__ == '__main__':

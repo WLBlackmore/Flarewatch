@@ -32,6 +32,9 @@ const MainMap = ({ showFRP, showBrightness }) => {
   // Popups state for selected fire station
   const [selectedFireStation, setSelectedFireStation] = useState(null);
 
+  // Routes state
+  const [routeData, setRouteData] = useState(null);
+
   // Reference to the map instance
   const mapRef = useRef(null);
 
@@ -108,17 +111,24 @@ const MainMap = ({ showFRP, showBrightness }) => {
 
     // Perform request to backend
     try {
-      const response = await axios
-        .post("http://localhost:5000/find-route", {
-          stationCordinates,
-          fireCoordinates,
-        });
-      
+      const response = await axios.post("http://localhost:5000/find-route", {
+        stationCordinates,
+        fireCoordinates,
+      });
+
       console.log(response);
 
+      // Set the route data
+      const routeGeometry = response.data.routes[0].geometry;
+      const routeData = {
+        type: "Feature",
+        geometry: routeGeometry,
+      };
+      console.log("Route data:", routeData);
+      setRouteData(routeData);
     } catch (error) {
       console.log(error);
-    }    
+    }
   };
 
   // Fetch and load the GeoJSON data on component mount
@@ -365,6 +375,20 @@ const MainMap = ({ showFRP, showBrightness }) => {
                 handleFindRoute={handleFindRoute}
               />
             </Popup>
+          )}
+
+          {/* Route data */}
+          {routeData && (
+            <Source id="route-source" type="geojson" data={routeData}>
+              <Layer
+                id="route-layer"
+                type="line"
+                paint={{
+                  "line-color": "#FF0000",
+                  "line-width": 4,
+                }}
+              />
+            </Source>
           )}
         </ReactMapGL>
       </div>
