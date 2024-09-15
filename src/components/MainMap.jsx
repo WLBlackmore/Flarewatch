@@ -78,7 +78,7 @@ const MainMap = ({ showFRP, showBrightness }) => {
         longitude: selectedFire.Longitude,
       };
 
-      setNearestFireStations({...response, fireCoordinates});
+      setNearestFireStations({ ...response, fireCoordinates });
       console.log(nearestFireStations);
     } catch (error) {
       console.error(error);
@@ -106,6 +106,19 @@ const MainMap = ({ showFRP, showBrightness }) => {
       fireCoordinates
     );
 
+    // Perform request to backend
+    try {
+      const response = await axios
+        .post("http://localhost:5000/find-route", {
+          stationCordinates,
+          fireCoordinates,
+        });
+      
+      console.log(response);
+
+    } catch (error) {
+      console.log(error);
+    }    
   };
 
   // Fetch and load the GeoJSON data on component mount

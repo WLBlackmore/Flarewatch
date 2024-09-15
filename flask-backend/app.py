@@ -44,7 +44,11 @@ def find_fire_stations():
         return jsonify(geojson_data)
 
 
-    
+@app.route('/find-route', methods=['POST'])
+def find_route():
+    data = request.get_json()
+    print("Hit found route")
+    return jsonify({'message': 'test'})
 
 
 
