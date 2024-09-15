@@ -71,11 +71,41 @@ const MainMap = ({ showFRP, showBrightness }) => {
           longitude: selectedFire.Longitude,
         })
         .then((response) => response.data);
-      setNearestFireStations(response);
+
+      // Add the corresponding fire coordinates to the nearest fire station state
+      const fireCoordinates = {
+        latitude: selectedFire.Latitude,
+        longitude: selectedFire.Longitude,
+      };
+
+      setNearestFireStations({...response, fireCoordinates});
       console.log(nearestFireStations);
     } catch (error) {
       console.error(error);
     }
+  };
+
+  // Route finding logic
+  const handleFindRoute = async () => {
+    if (!selectedFireStation) {
+      console.log("No fire or fire station selected");
+      return;
+    }
+
+    const stationCordinates = {
+      latitude: selectedFireStation.latitude,
+      longitude: selectedFireStation.longitude,
+    };
+
+    const fireCoordinates = nearestFireStations.fireCoordinates;
+
+    console.log(
+      "Finding route from fire station at coordinates:",
+      stationCordinates,
+      "to fire at coordinates:",
+      fireCoordinates
+    );
+
   };
 
   // Fetch and load the GeoJSON data on component mount
@@ -317,11 +347,12 @@ const MainMap = ({ showFRP, showBrightness }) => {
               onClose={() => setSelectedFireStation(null)}
               closeOnClick={false}
             >
-              <FireStationPopup fireStation={selectedFireStation} />
-              </Popup>
+              <FireStationPopup
+                fireStation={selectedFireStation}
+                handleFindRoute={handleFindRoute}
+              />
+            </Popup>
           )}
-
-          
         </ReactMapGL>
       </div>
     </div>
