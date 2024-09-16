@@ -138,12 +138,12 @@ const MainMap = ({ showFRP, showBrightness }) => {
   useEffect(() => {
     axios.get("http://localhost:5000/get-nasa-fire-data").then((response) => {
       const data = response.data;
-      
+
       // Set the centroid data
-      setCentroidData(data["suomi-npp-viirs"].centroids);
+      setCentroidData(data["suomi-npp-viirs-c2"].centroids);
 
       // Set the footprint data
-      setFootprintData(data["suomi-npp-viirs"].polygons); 
+      setFootprintData(data["suomi-npp-viirs-c2"].polygons);
     });
   }, []);
 

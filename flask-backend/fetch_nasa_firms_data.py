@@ -5,7 +5,7 @@ import os
 import io
 import json
 
-def fetch_nasa_firms_viirs_data(region, datespan, sensor):
+def fetch_nasa_firms_data(region, datespan, sensor):
     # Define the URL for the NASA FIRMS API
     url = f"https://firms.modaps.eosdis.nasa.gov/api/kml_fire_footprints/{region}/{datespan}/{sensor}"
 
@@ -50,6 +50,7 @@ def fetch_nasa_firms_viirs_data(region, datespan, sensor):
     
 
 def process_nasa_firms_data():
+    import os
     # **Base directory for data**
     base_dir = 'nasa_firms_data'
 
@@ -59,23 +60,34 @@ def process_nasa_firms_data():
     # Parameter list
     api_parameter_list = []
 
-    # Canada region, 24-hour data, VIIRS sensor
-    region = "canada"
-    datespan = "24h"
-    sensor = "suomi-npp-viirs-c2"
-    # **Adjust dir_cache to include base_dir**
-    dir_cache = os.path.join(base_dir, "can_suomi-npp-viirs_24h")
-    canada_parameters = (region, datespan, sensor, dir_cache)
-    api_parameter_list.append(canada_parameters)
+    # Define regions and sensors
+    regions = [
+        {
+            'region': 'canada',
+            'datespan': '24h',
+            'sensors': ['suomi-npp-viirs-c2', 'c6.1']
+        },
+        {
+            'region': 'usa_contiguous_and_hawaii',
+            'datespan': '24h',
+            'sensors': ['suomi-npp-viirs-c2', 'c6.1']
+        }
+    ]
 
-    # USA region, 24-hour data, VIIRS sensor
-    region = "usa_contiguous_and_hawaii"
-    datespan = "24h"
-    sensor = "suomi-npp-viirs-c2"
-    # **Adjust dir_cache to include base_dir**
-    dir_cache = os.path.join(base_dir, "usa_suomi-npp-viirs_24h")
-    usa_parameters = (region, datespan, sensor, dir_cache)
-    api_parameter_list.append(usa_parameters)
+    for region_info in regions:
+        region = region_info['region']
+        datespan = region_info['datespan']
+        sensors = region_info['sensors']
+        for sensor in sensors:
+            if region == 'usa_contiguous_and_hawaii':
+                region_name = 'usa'
+            elif region == 'canada':
+                region_name = 'can'
+            else:
+                region_name = region
+            dir_cache = os.path.join(base_dir, f"{region_name}_{sensor}_{datespan}")
+            parameters = (region, datespan, sensor, dir_cache)
+            api_parameter_list.append(parameters)
 
     if not api_parameter_list:
         print("No parameters found.")
@@ -88,11 +100,11 @@ def process_nasa_firms_data():
         print(f"Processing NASA FIRMS data for {region} region, {datespan} datespan, {sensor} sensor...")
 
         # Fetch NASA FIRMS data
-        kml_file_path = fetch_nasa_firms_viirs_data(region, datespan, sensor)
+        kml_file_path = fetch_nasa_firms_data(region, datespan, sensor)
         
         # **Ensure kml_file_path is valid**
         if kml_file_path is None:
-            print(f"Failed to fetch KML data for {region}. Skipping.")
+            print(f"Failed to fetch KML data for {region} with sensor {sensor}. Skipping.")
             continue
 
         # Convert the KML data to GeoJSON
@@ -102,6 +114,7 @@ def process_nasa_firms_data():
         # After converting the KML data to GeoJSON, remove the KML file
         os.remove(kml_file_path)
         print(f"Removed KML: {kml_file_path}")
+
 
 def combine_nasa_firms_geojson():
     base_dir = './nasa_firms_data'
@@ -152,4 +165,5 @@ def combine_nasa_firms_geojson():
                                 result[satellite_name][geo_type]['features'].append(data)
     return result
 
-# process_nasa_firms_data()
+# Process NASA FIRMS data
+process_nasa_firms_data()
