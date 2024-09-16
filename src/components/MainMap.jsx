@@ -65,8 +65,11 @@ const MainMap = ({ showFRP, showBrightness }) => {
   const handleFindFireStations = async () => {
     console.log("Finding nearest 5 fire stations");
     console.log(selectedFire);
-    // Add request to flask
 
+    // Clear route data
+    setRouteData(null);
+
+    // Add request to flask
     try {
       const response = await axios
         .post("http://localhost:5000/find-fire-stations", {
