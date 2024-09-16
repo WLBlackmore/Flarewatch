@@ -21,21 +21,28 @@ def parse_description(description):
             data[key.strip()] = value.strip()
     return data
 
-# Function to convert KML to GeoJSON
+# Function to convert KML to GeoJSON and separate centroids and polygons
 def kml_to_geojson(kml_file_path, output_dir):
     # Parse the KML file
     tree = ET.parse(kml_file_path)
     root = tree.getroot()
 
-    # Create a directory for output GeoJSON files
-    if not os.path.exists(output_dir):
-        os.makedirs(output_dir)
+    # Create directories for centroids (points) and polygons
+    points_dir = os.path.join(output_dir, "centroids")
+    polygons_dir = os.path.join(output_dir, "polygons")
+
+    if not os.path.exists(points_dir):
+        os.makedirs(points_dir)
+    if not os.path.exists(polygons_dir):
+        os.makedirs(polygons_dir)
 
     # Loop through each placemark (layer) in the KML
     for folder in root.findall(".//kml:Folder", namespaces):
         folder_name = folder.find("kml:name", namespaces).text.strip()
 
-        features = []
+        point_features = []
+        polygon_features = []
+
         for placemark in folder.findall(".//kml:Placemark", namespaces):
             # Extract the geometry (point, polygon, etc.)
             point = placemark.find(".//kml:Point/kml:coordinates", namespaces)
@@ -52,6 +59,8 @@ def kml_to_geojson(kml_file_path, output_dir):
                 coordinates = point.text.strip().split(",")
                 lon, lat = float(coordinates[0]), float(coordinates[1])
                 geometry = geojson.Point((lon, lat))
+                feature = geojson.Feature(geometry=geometry, properties=properties)
+                point_features.append(feature)
             # Handle Polygon
             elif polygon is not None:
                 coordinates = [
@@ -61,20 +70,24 @@ def kml_to_geojson(kml_file_path, output_dir):
                     ]
                 ]
                 geometry = geojson.Polygon(coordinates)
-            else:
-                continue  # Skip if no geometry
+                feature = geojson.Feature(geometry=geometry, properties=properties)
+                polygon_features.append(feature)
 
-            # Create GeoJSON feature
-            feature = geojson.Feature(geometry=geometry, properties=properties)
-            features.append(feature)
+        # Save centroids (points) GeoJSON for each folder/layer
+        if point_features:
+            point_feature_collection = geojson.FeatureCollection(point_features)
+            points_output_path = os.path.join(points_dir, f"{folder_name.replace(' ', '_')}_centroids.geojson")
+            with open(points_output_path, 'w') as points_geojson_file:
+                geojson.dump(point_feature_collection, points_geojson_file, indent=2)
+            print(f"Saved Centroids GeoJSON: {points_output_path}")
 
-        # Save the GeoJSON for each folder/layer
-        feature_collection = geojson.FeatureCollection(features)
-        geojson_output_path = os.path.join(output_dir, f"{output_dir}_{folder_name.replace(' ', '_')}.geojson")
-        with open(geojson_output_path, 'w') as geojson_file:
-            geojson.dump(feature_collection, geojson_file, indent=2)
-
-        print(f"Saved GeoJSON: {geojson_output_path}")
+        # Save polygons GeoJSON for each folder/layer
+        if polygon_features:
+            polygon_feature_collection = geojson.FeatureCollection(polygon_features)
+            polygons_output_path = os.path.join(polygons_dir, f"{folder_name.replace(' ', '_')}_polygons.geojson")
+            with open(polygons_output_path, 'w') as polygons_geojson_file:
+                geojson.dump(polygon_feature_collection, polygons_geojson_file, indent=2)
+            print(f"Saved Polygons GeoJSON: {polygons_output_path}")
 
 # # Example usage
 # kml_file_path = "SUOMI_VIIRS_C2_Canada_24h_1725740940864.kml"  # Path to your KML file

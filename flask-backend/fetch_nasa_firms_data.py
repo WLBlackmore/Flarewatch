@@ -3,6 +3,7 @@ import kml_to_geojson_parser
 import zipfile
 import os
 import io
+import json
 
 def fetch_nasa_firms_viirs_data(region, datespan, sensor):
     # Define the URL for the NASA FIRMS API
@@ -49,6 +50,12 @@ def fetch_nasa_firms_viirs_data(region, datespan, sensor):
     
 
 def process_nasa_firms_data():
+    # **Base directory for data**
+    base_dir = 'nasa_firms_data'
+
+    # **Create the base directory if it doesn't exist**
+    os.makedirs(base_dir, exist_ok=True)
+
     # Parameter list
     api_parameter_list = []
 
@@ -56,14 +63,18 @@ def process_nasa_firms_data():
     region = "canada"
     datespan = "24h"
     sensor = "suomi-npp-viirs-c2"
-    canada_parameters = (region, datespan, sensor)
+    # **Adjust dir_cache to include base_dir**
+    dir_cache = os.path.join(base_dir, "can_suomi-npp-viirs_24h")
+    canada_parameters = (region, datespan, sensor, dir_cache)
     api_parameter_list.append(canada_parameters)
 
     # USA region, 24-hour data, VIIRS sensor
     region = "usa_contiguous_and_hawaii"
     datespan = "24h"
     sensor = "suomi-npp-viirs-c2"
-    usa_parameters = (region, datespan, sensor)
+    # **Adjust dir_cache to include base_dir**
+    dir_cache = os.path.join(base_dir, "usa_suomi-npp-viirs_24h")
+    usa_parameters = (region, datespan, sensor, dir_cache)
     api_parameter_list.append(usa_parameters)
 
     if not api_parameter_list:
@@ -72,21 +83,73 @@ def process_nasa_firms_data():
 
     # Loop through each set of parameters
     for parameters in api_parameter_list:
-        region, datespan, sensor = parameters
+        region, datespan, sensor, dir_cache = parameters
 
         print(f"Processing NASA FIRMS data for {region} region, {datespan} datespan, {sensor} sensor...")
 
         # Fetch NASA FIRMS data
         kml_file_path = fetch_nasa_firms_viirs_data(region, datespan, sensor)
         
+        # **Ensure kml_file_path is valid**
+        if kml_file_path is None:
+            print(f"Failed to fetch KML data for {region}. Skipping.")
+            continue
+
         # Convert the KML data to GeoJSON
-        output_dir = f"{region}_{datespan}_{sensor}_data"
+        output_dir = dir_cache
         kml_to_geojson_parser.kml_to_geojson(kml_file_path, output_dir)
 
         # After converting the KML data to GeoJSON, remove the KML file
         os.remove(kml_file_path)
         print(f"Removed KML: {kml_file_path}")
+
+def combine_nasa_firms_geojson():
+    base_dir = './nasa_firms_data'
     
-# Process the NASA FIRMS data
-process_nasa_firms_data()    
+    # Get all directories in the base directory
+    all_dirs = [d for d in os.listdir(base_dir) if os.path.isdir(os.path.join(base_dir, d))]
     
+    result = {}
+    
+    for dir_name in all_dirs:
+        dir_path = os.path.join(base_dir, dir_name)
+        components = dir_name.split('_')
+        
+        # Ensure the directory name has at least three components
+        if len(components) < 3:
+            print(f"Skipping directory '{dir_name}' due to unexpected naming format.")
+            continue
+        
+        # Extract satellite name
+        # Satellite name may contain underscores; join intermediate components
+        satellite_name = '_'.join(components[1:-1])
+        
+        # Initialize nested dictionaries
+        if satellite_name not in result:
+            result[satellite_name] = {
+                "centroids": {
+                    "type": "FeatureCollection",
+                    "features": []
+                },
+                "polygons": {
+                    "type": "FeatureCollection",
+                    "features": []
+                }
+            }
+        
+        # Process 'centroids' and 'polygons' subdirectories
+        for geo_type in ['centroids', 'polygons']:
+            path = os.path.join(dir_path, geo_type)
+            if os.path.exists(path):
+                for filename in os.listdir(path):
+                    if filename.endswith('.geojson'):
+                        filepath = os.path.join(path, filename)
+                        with open(filepath, 'r') as f:
+                            data = json.load(f)
+                            if data.get('type') == 'FeatureCollection':
+                                result[satellite_name][geo_type]['features'].extend(data.get('features', []))
+                            elif data.get('type') == 'Feature':
+                                result[satellite_name][geo_type]['features'].append(data)
+    return result
+
+# process_nasa_firms_data()

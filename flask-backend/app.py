@@ -4,6 +4,8 @@ import requests
 import osm_to_geojson
 from dotenv import load_dotenv
 import os
+import json
+from fetch_nasa_firms_data import combine_nasa_firms_geojson
 
 app = Flask(__name__)
 CORS(app)
@@ -71,6 +73,14 @@ def find_route():
     except requests.exceptions.HTTPError as err:
         print(f"HTTP error occurred: {err}")
         return jsonify({'message': 'Error fetching route data'})
+
+@app.route('/get-nasa-fire-data')
+def get_nasa_fire_data():
+    sattelite_data_geojson = combine_nasa_firms_geojson()
+    return jsonify(sattelite_data_geojson)
+    
+
+    
 
 
 if __name__ == '__main__':

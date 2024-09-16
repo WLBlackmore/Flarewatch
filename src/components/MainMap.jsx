@@ -136,48 +136,15 @@ const MainMap = ({ showFRP, showBrightness }) => {
 
   // Fetch and load the GeoJSON data on component mount
   useEffect(() => {
-    const fetchGeoJsonData = async (fileNames) => {
-      const geoJsonPromises = fileNames.map((fileName) =>
-        axios
-          .get(`/data/NASA_GEO/${fileName}`)
-          .then((response) => response.data)
-      );
+    axios.get("http://localhost:5000/get-nasa-fire-data").then((response) => {
+      const data = response.data;
+      
+      // Set the centroid data
+      setCentroidData(data["suomi-npp-viirs"].centroids);
 
-      const geoJsonDataArray = await Promise.all(geoJsonPromises);
-
-      const combinedFeatures = geoJsonDataArray.reduce(
-        (acc, curr) => acc.concat(curr.features),
-        []
-      );
-
-      return {
-        type: "FeatureCollection",
-        features: combinedFeatures,
-      };
-    };
-
-    // Define the GeoJSON file names to fetch
-    const centroidFileNames = [
-      "canada_24h_suomi-npp-viirs-c2_data_375m_Fire_Detection_Centroids_(Last_0_to_6hrs).geojson",
-      "canada_24h_suomi-npp-viirs-c2_data_375m_Fire_Detection_Centroids_(Last_6_to_12hrs).geojson",
-      "canada_24h_suomi-npp-viirs-c2_data_375m_Fire_Detection_Centroids_(Last_12_to_24hrs).geojson",
-      "usa_contiguous_and_hawaii_24h_suomi-npp-viirs-c2_data_375m_Fire_Detection_Centroids_(Last_0_to_6hrs).geojson",
-      "usa_contiguous_and_hawaii_24h_suomi-npp-viirs-c2_data_375m_Fire_Detection_Centroids_(Last_6_to_12hrs).geojson",
-      "usa_contiguous_and_hawaii_24h_suomi-npp-viirs-c2_data_375m_Fire_Detection_Centroids_(Last_12_to_24hrs).geojson",
-    ];
-
-    const footprintFileNames = [
-      "canada_24h_suomi-npp-viirs-c2_data_375m_Fire_Detection_Footprints_(Last_0_to_6hrs).geojson",
-      "canada_24h_suomi-npp-viirs-c2_data_375m_Fire_Detection_Footprints_(Last_6_to_12hrs).geojson",
-      "canada_24h_suomi-npp-viirs-c2_data_375m_Fire_Detection_Footprints_(Last_12_to_24hrs).geojson",
-      "usa_contiguous_and_hawaii_24h_suomi-npp-viirs-c2_data_375m_Fire_Detection_Footprints_(Last_0_to_6hrs).geojson",
-      "usa_contiguous_and_hawaii_24h_suomi-npp-viirs-c2_data_375m_Fire_Detection_Footprints_(Last_6_to_12hrs).geojson",
-      "usa_contiguous_and_hawaii_24h_suomi-npp-viirs-c2_data_375m_Fire_Detection_Footprints_(Last_12_to_24hrs).geojson",
-    ];
-
-    // Fetch and set the data
-    fetchGeoJsonData(centroidFileNames).then(setCentroidData);
-    fetchGeoJsonData(footprintFileNames).then(setFootprintData);
+      // Set the footprint data
+      setFootprintData(data["suomi-npp-viirs"].polygons); 
+    });
   }, []);
 
   // Function to handle map load event

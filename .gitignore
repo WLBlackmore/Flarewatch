@@ -38,7 +38,6 @@ public/data/
 
 flask-backend/test/
 
-canada_*
-usa_*
+nasa_firms_data/
 
 kml_cache/
