@@ -15,7 +15,7 @@ const MainMapSidebar = ({
       <h2>Wildfire Map Controls</h2>
 
       <div className={styles.section}>
-        <h3>Satellite Selection</h3>
+        <h3>Satellite Controls</h3>
         <SatelliteDropdown
           selectedSatellite={selectedSatellite}
           setSelectedSatellite={setSelectedSatellite}
@@ -23,7 +23,7 @@ const MainMapSidebar = ({
       </div>
 
       <div className={styles.section}>
-        <h3>Display Options</h3>
+        <h3>Layer Options</h3>
         <label className={styles.toggle}>
           <input
             type="checkbox"
