@@ -1,0 +1,24 @@
+.dropdownContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .dropdownContainer label {
+    font-size: 16px;
+    color: #ffffff;
+  }
+  
+  .satelliteSelect {
+    padding: 8px;
+    background-color: #2a2a2a;
+    color: #ffffff;
+    border: 1px solid #444444;
+    border-radius: 4px;
+  }
+  
+  .satelliteSelect:focus {
+    outline: none;
+    border-color: #2196F3;
+  }
+  

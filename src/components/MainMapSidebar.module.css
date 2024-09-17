@@ -1,21 +1,69 @@
 .sidebar {
-    width: 300px;  /* Fixed width for the sidebar */
-    padding: 20px;
-    background-color: #0b0b0b;  /* Sidebar background color */
-    color: white;  /* White text for contrast */
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    gap: 20px;
-  }
-  
-  .sidebar h2 {
-    color: white;  /* Highlight color from your palette */
-  }
-  
-  .filterSection label {
-    display: block;
-    margin: 10px 0;
-    color: #FFE9DC;  /* Softer text color for readability */
-  }
-  
+  width: 300px;
+  padding: 20px;
+  background-color: #1e1e1e;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.sidebar h2 {
+  margin-bottom: 10px;
+  font-size: 24px;
+}
+
+.section {
+  background-color: #2a2a2a;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.section h3 {
+  margin-bottom: 15px;
+  font-size: 18px;
+}
+
+.toggle {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  cursor: pointer;
+}
+
+.toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle .slider {
+  position: relative;
+  width: 50px;
+  height: 24px;
+  background-color: #ccc;
+  border-radius: 34px;
+  margin-right: 15px;
+  transition: background-color 0.2s;
+}
+
+.toggle .slider::before {
+  content: "";
+  position: absolute;
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  border-radius: 50%;
+  transition: transform 0.2s;
+}
+
+.toggle input:checked + .slider {
+  background-color: #2196F3;
+}
+
+.toggle input:checked + .slider::before {
+  transform: translateX(26px);
+}

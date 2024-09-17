@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./MainMapSidebar.module.css"; // Sidebar-specific styles
+import styles from "./MainMapSidebar.module.css";
 import SatelliteDropdown from "./SatelliteDropdown";
 
 const MainMapSidebar = ({
@@ -8,32 +8,39 @@ const MainMapSidebar = ({
   showBrightness,
   setShowBrightness,
   selectedSatellite,
-  setSelectedSatellite
-
+  setSelectedSatellite,
 }) => {
   return (
     <div className={styles.sidebar}>
-      <SatelliteDropdown
-        selectedSatellite={selectedSatellite}
-        setSelectedSatellite={setSelectedSatellite}
-      />
-      <h2>Tool Bar</h2>
-      <div className={styles.filterSection}>
-        <p>Filter Options</p>
-        <label>
+      <h2>Wildfire Map Controls</h2>
+
+      <div className={styles.section}>
+        <h3>Satellite Selection</h3>
+        <SatelliteDropdown
+          selectedSatellite={selectedSatellite}
+          setSelectedSatellite={setSelectedSatellite}
+        />
+      </div>
+
+      <div className={styles.section}>
+        <h3>Display Options</h3>
+        <label className={styles.toggle}>
           <input
             type="checkbox"
             checked={showFRP}
             onChange={() => setShowFRP(!showFRP)}
           />
+          <span className={styles.slider}></span>
           Show FRP Markers
         </label>
-        <label>
+
+        <label className={styles.toggle}>
           <input
             type="checkbox"
             checked={showBrightness}
             onChange={() => setShowBrightness(!showBrightness)}
           />
+          <span className={styles.slider}></span>
           Show Brightness Heatmap
         </label>
       </div>
