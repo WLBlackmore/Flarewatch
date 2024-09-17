@@ -7,6 +7,8 @@ const Mapviewer = () => {
   // Filter State
   const [showFRP, setShowFRP] = useState(true);
   const [showBrightness, setShowBrightness] = useState(false);
+  const [selectedSatellite, setSelectedSatellite] =
+    useState("suomi-npp-viirs-c2");
 
   // Layer State
   const [selectedFire, setSelectedFire] = useState(null);
@@ -27,6 +29,7 @@ const Mapviewer = () => {
         setSelectedFireStation={setSelectedFireStation}
         routeData={routeData}
         setRouteData={setRouteData}
+        selectedSatellite={selectedSatellite}
       />
 
       <MainMapSidebar
@@ -38,6 +41,8 @@ const Mapviewer = () => {
         nearestFireStations={nearestFireStations}
         selectedFireStation={selectedFireStation}
         routeData={routeData}
+        selectedSatellite={selectedSatellite}
+        setSelectedSatellite={setSelectedSatellite}
       />
     </div>
   );

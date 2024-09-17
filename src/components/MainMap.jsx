@@ -18,6 +18,7 @@ const MainMap = ({
   setSelectedFireStation,
   routeData,
   setRouteData,
+  selectedSatellite
 }) => {
   // Mapbox Configuration
   const mapApiToken = import.meta.env.VITE_MAPBOX_TOKEN;
@@ -32,6 +33,7 @@ const MainMap = ({
   });
 
   // NASA Fire Data
+  const [allSatelliteData, setAllSatelliteData] = useState(null);
   const [centroidData, setCentroidData] = useState(null);
   const [footprintData, setFootprintData] = useState(null);
 
@@ -136,10 +138,19 @@ const MainMap = ({
       const data = response.data;
 
       // Set the centroid and footprint data
-      setCentroidData(data["suomi-npp-viirs-c2"].centroids);
-      setFootprintData(data["suomi-npp-viirs-c2"].polygons);
+      setAllSatelliteData(data);  
+      setCentroidData(data[selectedSatellite].centroids);
+      setFootprintData(data[selectedSatellite].polygons);
     });
   }, []);
+
+  // Update centroid and footprint data when selected satellite changes
+  useEffect(() => {
+    if (allSatelliteData) {
+      setCentroidData(allSatelliteData[selectedSatellite].centroids);
+      setFootprintData(allSatelliteData[selectedSatellite].polygons);
+    }
+  }, [selectedSatellite, allSatelliteData]);
 
   // Handle map load event
   const handleMapLoad = (event) => {

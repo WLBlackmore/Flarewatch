@@ -1,14 +1,22 @@
 import React from "react";
 import styles from "./MainMapSidebar.module.css"; // Sidebar-specific styles
+import SatelliteDropdown from "./SatelliteDropdown";
 
 const MainMapSidebar = ({
   showFRP,
   setShowFRP,
   showBrightness,
-  setShowBrightness
+  setShowBrightness,
+  selectedSatellite,
+  setSelectedSatellite
+
 }) => {
   return (
     <div className={styles.sidebar}>
+      <SatelliteDropdown
+        selectedSatellite={selectedSatellite}
+        setSelectedSatellite={setSelectedSatellite}
+      />
       <h2>Tool Bar</h2>
       <div className={styles.filterSection}>
         <p>Filter Options</p>
