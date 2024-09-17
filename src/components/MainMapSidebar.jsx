@@ -1,7 +1,12 @@
 import React from "react";
 import styles from "./MainMapSidebar.module.css"; // Sidebar-specific styles
 
-const MainMapSidebar = ({ showFRP, setShowFRP, showBrightness, setShowBrightness }) => {
+const MainMapSidebar = ({
+  showFRP,
+  setShowFRP,
+  showBrightness,
+  setShowBrightness
+}) => {
   return (
     <div className={styles.sidebar}>
       <h2>Tool Bar</h2>

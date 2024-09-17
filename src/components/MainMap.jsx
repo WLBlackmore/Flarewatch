@@ -7,10 +7,22 @@ import fireStationIcon from "../assets/firestationicon.png";
 import FireReportPopup from "./FireReportPopup";
 import FireStationPopup from "./FireStationPopup";
 
-const MainMap = ({ showFRP, showBrightness }) => {
+const MainMap = ({
+  showFRP,
+  showBrightness,
+  selectedFire,
+  setSelectedFire,
+  nearestFireStations,
+  setNearestFireStations,
+  selectedFireStation,
+  setSelectedFireStation,
+  routeData,
+  setRouteData,
+}) => {
   // Mapbox Configuration
   const mapApiToken = import.meta.env.VITE_MAPBOX_TOKEN;
 
+  // Viewport state
   const [viewport, setViewport] = useState({
     latitude: 45.5019,
     longitude: -73.5674,
@@ -23,23 +35,11 @@ const MainMap = ({ showFRP, showBrightness }) => {
   const [centroidData, setCentroidData] = useState(null);
   const [footprintData, setFootprintData] = useState(null);
 
-  // Popups state for fire reports
-  const [selectedFire, setSelectedFire] = useState(null);
-
-  // Nearest fire station state
-  const [nearestFireStations, setNearestFireStations] = useState(null);
-
-  // Popups state for selected fire station
-  const [selectedFireStation, setSelectedFireStation] = useState(null);
-
-  // Routes state
-  const [routeData, setRouteData] = useState(null);
-
   // Reference to the map instance
   const mapRef = useRef(null);
 
+  // Handle map click events
   const handleMapClick = (evt) => {
-    // Ensure that features exist and are iterable
     if (evt.features && evt.features.length > 0) {
       const [feature] = evt.features;
       if (feature) {
@@ -61,15 +61,14 @@ const MainMap = ({ showFRP, showBrightness }) => {
     }
   };
 
-  // Fire station
+  // Find nearest fire stations
   const handleFindFireStations = async () => {
     console.log("Finding nearest 5 fire stations");
     console.log(selectedFire);
 
-    // Clear route data
+    // Clear existing route data
     setRouteData(null);
 
-    // Add request to flask
     try {
       const response = await axios
         .post("http://localhost:5000/find-fire-stations", {
@@ -78,27 +77,27 @@ const MainMap = ({ showFRP, showBrightness }) => {
         })
         .then((response) => response.data);
 
-      // Add the corresponding fire coordinates to the nearest fire station state
+      // Add fire coordinates to the nearest fire stations data
       const fireCoordinates = {
         latitude: selectedFire.Latitude,
         longitude: selectedFire.Longitude,
       };
 
       setNearestFireStations({ ...response, fireCoordinates });
-      console.log(nearestFireStations);
+      console.log("Nearest fire stations:", nearestFireStations);
     } catch (error) {
-      console.error(error);
+      console.error("Error finding fire stations:", error);
     }
   };
 
-  // Route finding logic
+  // Find route from fire station to fire
   const handleFindRoute = async () => {
     if (!selectedFireStation) {
-      console.log("No fire or fire station selected");
+      console.log("No fire station selected");
       return;
     }
 
-    const stationCordinates = {
+    const stationCoordinates = {
       latitude: selectedFireStation.latitude,
       longitude: selectedFireStation.longitude,
     };
@@ -107,51 +106,46 @@ const MainMap = ({ showFRP, showBrightness }) => {
 
     console.log(
       "Finding route from fire station at coordinates:",
-      stationCordinates,
+      stationCoordinates,
       "to fire at coordinates:",
       fireCoordinates
     );
 
-    // Perform request to backend
     try {
       const response = await axios.post("http://localhost:5000/find-route", {
-        stationCordinates,
+        stationCoordinates,
         fireCoordinates,
       });
 
-      console.log(response);
-
       // Set the route data
       const routeGeometry = response.data.routes[0].geometry;
-      const routeData = {
+      const routeFeature = {
         type: "Feature",
         geometry: routeGeometry,
       };
-      console.log("Route data:", routeData);
-      setRouteData(routeData);
+      console.log("Route data:", routeFeature);
+      setRouteData(routeFeature);
     } catch (error) {
-      console.log(error);
+      console.error("Error finding route:", error);
     }
   };
 
-  // Fetch and load the GeoJSON data on component mount
+  // Fetch NASA fire data on component mount
   useEffect(() => {
     axios.get("http://localhost:5000/get-nasa-fire-data").then((response) => {
       const data = response.data;
 
-      // Set the centroid data
+      // Set the centroid and footprint data
       setCentroidData(data["suomi-npp-viirs-c2"].centroids);
-
-      // Set the footprint data
       setFootprintData(data["suomi-npp-viirs-c2"].polygons);
     });
   }, []);
 
-  // Function to handle map load event
+  // Handle map load event
   const handleMapLoad = (event) => {
     const map = event.target;
 
-    // Store the map instance for later use
+    // Store the map instance
     mapRef.current = map;
 
     // Add the firetruck icon to the map
@@ -196,13 +190,13 @@ const MainMap = ({ showFRP, showBrightness }) => {
                     ["linear"],
                     ["to-number", ["slice", ["get", "FRP"], 0, -3]],
                     0,
-                    "#FFFF99", // Light Yellow for the lowest FRP
+                    "#FFFF99",
                     1.87,
-                    "#FFFF00", // Yellow for FRP between 1.87 - 3.92 MW
+                    "#FFFF00",
                     3.92,
-                    "#FFA500", // Orange for FRP between 3.92 - 10.75 MW
+                    "#FFA500",
                     10.75,
-                    "#FF0000", // Red for FRP above 10.75 MW
+                    "#FF0000",
                   ],
                   "fill-opacity": 0.3,
                 }}
@@ -226,13 +220,13 @@ const MainMap = ({ showFRP, showBrightness }) => {
                     ["linear"],
                     ["to-number", ["slice", ["get", "FRP"], 0, -3]],
                     0,
-                    "#FFFF99", // Light Yellow for the lowest FRP
+                    "#FFFF99",
                     1.87,
-                    "#FFFF00", // Yellow for FRP between 1.87 - 3.92 MW
+                    "#FFFF00",
                     3.92,
-                    "#FFA500", // Orange for FRP between 3.92 - 10.75 MW
+                    "#FFA500",
                     10.75,
-                    "#FF0000", // Red for FRP above 10.75 MW
+                    "#FF0000",
                   ],
                   "circle-opacity": 0.7,
                 }}
@@ -256,42 +250,42 @@ const MainMap = ({ showFRP, showBrightness }) => {
                     ["linear"],
                     ["to-number", ["slice", ["get", "Brightness"], 0, -2]],
                     208,
-                    0.2, // Low brightness still contributes, but weakly
+                    0.2,
                     367,
-                    0.8, // High brightness contributes more strongly
+                    0.8,
                   ],
                   "heatmap-intensity": [
                     "interpolate",
                     ["linear"],
                     ["zoom"],
                     0,
-                    0.8, // Slightly stronger intensity at lower zoom levels
+                    0.8,
                     10,
-                    2, // Moderate intensity at higher zoom
+                    2,
                   ],
                   "heatmap-color": [
                     "interpolate",
                     ["linear"],
                     ["heatmap-density"],
                     0,
-                    "rgba(33,102,172,0)", // Transparent at low density
+                    "rgba(33,102,172,0)",
                     0.2,
-                    "rgb(103,169,207)", // Blue at medium-low density
+                    "rgb(103,169,207)",
                     0.4,
-                    "rgb(253,219,199)", // Yellow to orange at medium density
+                    "rgb(253,219,199)",
                     0.6,
-                    "rgb(239,138,98)", // Orange at higher density
+                    "rgb(239,138,98)",
                     1,
-                    "rgb(178,24,43)", // Dark red at very high density
+                    "rgb(178,24,43)",
                   ],
                   "heatmap-radius": [
                     "interpolate",
                     ["linear"],
                     ["zoom"],
                     0,
-                    3, // Increase the radius slightly at lower zoom levels to show more spread
+                    3,
                     9,
-                    18, // Larger spread at higher zoom levels
+                    18,
                   ],
                 }}
               />
@@ -347,7 +341,7 @@ const MainMap = ({ showFRP, showBrightness }) => {
             </Popup>
           )}
 
-          {/* Route data */}
+          {/* Display the route from fire station to fire */}
           {routeData && (
             <Source id="route-source" type="geojson" data={routeData}>
               <Layer

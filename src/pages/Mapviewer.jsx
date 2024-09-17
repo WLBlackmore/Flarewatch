@@ -1,24 +1,43 @@
 import React, { useState } from "react";
 import styles from "./Mapviewer.module.css";
 import MainMap from "../components/MainMap";
-import MainMapSidebar from "../components/MainMapSidebar"; // Import the sidebar
+import MainMapSidebar from "../components/MainMapSidebar";
 
 const Mapviewer = () => {
-  // Layer State
+  // Filter State
   const [showFRP, setShowFRP] = useState(true);
   const [showBrightness, setShowBrightness] = useState(false);
 
+  // Layer State
+  const [selectedFire, setSelectedFire] = useState(null);
+  const [nearestFireStations, setNearestFireStations] = useState(null);
+  const [selectedFireStation, setSelectedFireStation] = useState(null);
+  const [routeData, setRouteData] = useState(null);
+
   return (
     <div className={styles.mapviewerContainer}>
-      {/* Map section */}
-      <MainMap showFRP={showFRP} showBrightness={showBrightness} />
+      <MainMap
+        showFRP={showFRP}
+        showBrightness={showBrightness}
+        selectedFire={selectedFire}
+        setSelectedFire={setSelectedFire}
+        nearestFireStations={nearestFireStations}
+        setNearestFireStations={setNearestFireStations}
+        selectedFireStation={selectedFireStation}
+        setSelectedFireStation={setSelectedFireStation}
+        routeData={routeData}
+        setRouteData={setRouteData}
+      />
 
-      {/* Sidebar for filters or additional content */}
       <MainMapSidebar
         showFRP={showFRP}
         setShowFRP={setShowFRP}
         showBrightness={showBrightness}
         setShowBrightness={setShowBrightness}
+        selectedFire={selectedFire}
+        nearestFireStations={nearestFireStations}
+        selectedFireStation={selectedFireStation}
+        routeData={routeData}
       />
     </div>
   );

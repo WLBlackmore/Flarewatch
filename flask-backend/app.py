@@ -54,8 +54,8 @@ def find_fire_stations():
 @app.route('/find-route', methods=['POST'])
 def find_route():
     data = request.get_json()
-    station_latitude = data['stationCordinates']['latitude']
-    station_longitude = data['stationCordinates']['longitude']
+    station_latitude = data['stationCoordinates']['latitude']
+    station_longitude = data['stationCoordinates']['longitude']
     fire_latitude = data['fireCoordinates']['latitude']
     fire_longitude = data['fireCoordinates']['longitude']
 
