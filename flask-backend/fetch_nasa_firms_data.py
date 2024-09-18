@@ -65,12 +65,12 @@ def process_nasa_firms_data():
         {
             'region': 'canada',
             'datespan': '24h',
-            'sensors': ['suomi-npp-viirs-c2', 'c6.1', 'landsat', 'noaa-20-viirs-c2', 'nooa-21-viirs-c2']
+            'sensors': ['suomi-npp-viirs-c2', 'c6.1', 'landsat', 'noaa-20-viirs-c2', 'noaa-21-viirs-c2']
         },
         {
             'region': 'usa_contiguous_and_hawaii',
             'datespan': '24h',
-            'sensors': ['suomi-npp-viirs-c2', 'c6.1', 'landsat', 'noaa-20-viirs-c2', 'nooa-21-viirs-c2']
+            'sensors': ['suomi-npp-viirs-c2', 'c6.1', 'landsat', 'noaa-20-viirs-c2', 'noaa-21-viirs-c2']
         }
     ]
 
