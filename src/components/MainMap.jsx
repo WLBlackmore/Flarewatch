@@ -18,7 +18,7 @@ const MainMap = ({
   setSelectedFireStation,
   routeData,
   setRouteData,
-  selectedSatellite
+  selectedSatellite,
 }) => {
   // Mapbox Configuration
   const mapApiToken = import.meta.env.VITE_MAPBOX_TOKEN;
@@ -49,7 +49,8 @@ const MainMap = ({
         if (
           feature.layer.id === "centroids-layer" ||
           feature.layer.id === "footprints-layer" ||
-          feature.layer.id === "centroids-heatmap-layer"
+          feature.layer.id === "centroids-heatmap-layer" ||
+          feature.layer.id === "detection-time-layer"
         ) {
           setSelectedFire(feature.properties);
           console.log("Selected fire:", feature.properties);
@@ -138,7 +139,7 @@ const MainMap = ({
       const data = response.data;
 
       // Set the centroid and footprint data
-      setAllSatelliteData(data);  
+      setAllSatelliteData(data);
       setCentroidData(data[selectedSatellite].centroids);
       setFootprintData(data[selectedSatellite].polygons);
     });

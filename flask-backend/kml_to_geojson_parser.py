@@ -2,6 +2,7 @@ import xml.etree.ElementTree as ET
 import geojson
 import re
 import os
+from datetime import datetime, timezone
 
 # Define namespaces for KML parsing
 namespaces = {
@@ -18,7 +19,18 @@ def parse_description(description):
     for line in lines:
         if ": " in line:
             key, value = line.split(": ", 1)
-            data[key.strip()] = value.strip()
+            key = key.strip()
+            value = value.strip()
+
+            # Convert UTC to Epoch
+            if key == "Detection Time":
+                date_format = "%Y-%m-%d %H:%M %Z"
+                date = datetime.strptime(value, date_format)
+                date = date.replace(tzinfo=timezone.utc)
+                value = int(date.timestamp())
+            
+            data[key] = value
+            
     return data
 
 # Function to convert KML to GeoJSON and separate centroids and polygons

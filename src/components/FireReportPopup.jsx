@@ -1,8 +1,16 @@
 import styles from "./FireReportPopup.module.css";
 
 const FireReportPopup = (props) => {
-    const fire = props.fire;
-    const handleFindFireStations = props.handleFindFireStations;
+  const fire = props.fire;
+  const handleFindFireStations = props.handleFindFireStations;
+
+  const date = new Date(fire["Detection Time"] * 1000);
+  const formattedTime = `${date.getUTCFullYear()}-${String(
+    date.getUTCMonth() + 1
+  ).padStart(2, "0")}-${String(date.getUTCDate()).padStart(2, "0")} ${String(
+    date.getUTCHours()
+  ).padStart(2, "0")}:${String(date.getUTCMinutes()).padStart(2, "0")} UTC`;
+
   return (
     <div>
       <h2>Fire Report</h2>
@@ -10,7 +18,7 @@ const FireReportPopup = (props) => {
       <p>Longitude: {fire.Longitude}</p>
       <p>Fire Radiative Power: {fire.FRP}</p>
       <p>Brightness: {fire.Brightness}</p>
-      <p>Detection Time: {fire["Detection Time"]}</p>
+      <p>Detection Time: {formattedTime}</p>
       <p>Satellite: {fire.Sensor}</p>
       <p>Confidence: {fire.Confidence}</p>
       <p>
