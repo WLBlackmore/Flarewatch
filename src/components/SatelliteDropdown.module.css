@@ -21,4 +21,13 @@
     outline: none;
     border-color: #2196F3;
   }
+
+  .toggle:hover .slider {
+    background-color: #1e88e5;
+  }
+  
+  .satelliteSelect:hover {
+    border-color: #1e88e5;
+  }
+  
   
