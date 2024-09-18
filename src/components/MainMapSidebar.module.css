@@ -67,3 +67,24 @@
 .toggle input:checked + .slider::before {
   transform: translateX(26px);
 }
+
+.satelliteHeader {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.satelliteHeader>h3 {
+  margin-top: 2px;
+  padding-top: 0;
+}
+
+.satelliteIcon{
+  margin-right: 10px;
+}
+
+.layerIcon {
+  margin-right: 0px;
+  height: 64px;
+  width: 64px;
+}
