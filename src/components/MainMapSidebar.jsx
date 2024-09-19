@@ -16,7 +16,9 @@ const MainMapSidebar = ({
   return (
     <div className={styles.sidebar}>
       <h2>Wildfire Map Controls</h2>
-      <div className={styles.section}>
+
+      {/* Satellite Controls Section */}
+      <div className={`${styles.section} ${styles.satellite}`}>
         <div className={styles.satelliteHeader}>
           <h3>Satellite Controls</h3>
           <img src={satelliteIcon} alt="satellite icon" />
@@ -27,10 +29,11 @@ const MainMapSidebar = ({
         />
       </div>
 
-      <div className={styles.section}>
+      {/* Layer Options Section */}
+      <div className={`${styles.section} ${styles.layers}`}>
         <div className={styles.satelliteHeader}>
           <h3>Layer Options</h3>
-          <img src={layerIcon} alt="layer icon" className={styles.layerIcon}/>
+          <img src={layerIcon} alt="layer icon" className={styles.layerIcon} />
         </div>
         <label className={styles.toggle}>
           <input
@@ -51,7 +54,14 @@ const MainMapSidebar = ({
           <span className={styles.slider}></span>
           Show Brightness Heatmap
         </label>
-        <TimeSlider/>
+      </div>
+
+      {/* Time Filtering Section */}
+      <div className={`${styles.section} ${styles.time}`}>
+        <div className={styles.satelliteHeader}>
+          <h3>Time Filtering</h3>
+        </div>
+        <TimeSlider />
       </div>
     </div>
   );
