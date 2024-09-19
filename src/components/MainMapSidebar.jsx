@@ -3,6 +3,7 @@ import styles from "./MainMapSidebar.module.css";
 import SatelliteDropdown from "./SatelliteDropdown";
 import satelliteIcon from "../assets/satelliteIcon.png";
 import layerIcon from "../assets/layerIcon.png";
+import TimeSlider from "./TimeSlider";
 
 const MainMapSidebar = ({
   showFRP,
@@ -50,6 +51,7 @@ const MainMapSidebar = ({
           <span className={styles.slider}></span>
           Show Brightness Heatmap
         </label>
+        <TimeSlider/>
       </div>
     </div>
   );
