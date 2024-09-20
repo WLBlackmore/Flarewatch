@@ -14,16 +14,22 @@ const FireReportPopup = (props) => {
   return (
     <div>
       <h2>Fire Report</h2>
-      <p>Latitude: {fire.Latitude}</p>
-      <p>Longitude: {fire.Longitude}</p>
-      <p>Fire Radiative Power: {fire.FRP}</p>
-      <p>Brightness: {fire.Brightness}</p>
-      <p>Detection Time: {formattedTime}</p>
-      <p>Satellite: {fire.Sensor}</p>
-      <p>Confidence: {fire.Confidence}</p>
-      <p>
-        Scan Dimension: {fire.Scan} x {fire.Track}
-      </p>
+      {fire.Latitude && <p>Latitude: {fire.Latitude}</p>}
+      {fire.Longitude && <p>Longitude: {fire.Longitude}</p>}
+      {fire.FRP && <p>Fire Radiative Power: {fire.FRP}</p>}
+      {fire.Brightness && <p>Brightness: {fire.Brightness}</p>}
+      {formattedTime && <p>Detection Time: {formattedTime}</p>}
+      {fire.Sensor && <p>Satellite: {fire.Sensor}</p>}
+      {(fire.Confidence || fire["Confidence [0-100%]"]) && (
+        <p>Confidence: {fire.Confidence ?? fire["Confidence [0-100%]"]}</p>
+      )}
+      {fire.Scan && fire.Track && (
+        <p>
+          Scan Dimension: {fire.Scan} x {fire.Track}
+        </p>
+      )}
+      {fire["WRS-2 Path"] && <p>WRS-2 Path: {fire["WRS-2 Path"]}</p>}
+      {fire["WRS-2 Row"] && <p>WRS-2 Row: {fire["WRS-2 Row"]}</p>}
       <div className={styles.popupButtonContainer}>
         <button
           className={styles.stationButton}
