@@ -12,6 +12,8 @@ const MainMapSidebar = ({
   setShowBrightness,
   selectedSatellite,
   setSelectedSatellite,
+  timeFilter,
+  setTimeFilter,
 }) => {
   return (
     <div className={styles.sidebar}>
@@ -59,9 +61,9 @@ const MainMapSidebar = ({
       {/* Time Filtering Section */}
       <div className={`${styles.section} ${styles.time}`}>
         <div className={styles.satelliteHeader}>
-          <h3>Time Filtering</h3>
+          <h3>Detection Time</h3>
         </div>
-        <TimeSlider />
+        <TimeSlider timeFilter={timeFilter} setTimeFilter={setTimeFilter}/>
       </div>
     </div>
   );

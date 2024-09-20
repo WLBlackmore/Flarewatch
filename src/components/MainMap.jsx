@@ -19,6 +19,8 @@ const MainMap = ({
   routeData,
   setRouteData,
   selectedSatellite,
+  timeFilter,
+  setTimeFilter
 }) => {
   // Mapbox Configuration
   const mapApiToken = import.meta.env.VITE_MAPBOX_TOKEN;
@@ -36,6 +38,16 @@ const MainMap = ({
   const [allSatelliteData, setAllSatelliteData] = useState(null);
   const [centroidData, setCentroidData] = useState(null);
   const [footprintData, setFootprintData] = useState(null);
+
+  // Current time in Unix Epoch Format
+const [currentEpochTime, setCurrentEpochTime] = useState(Math.floor(Date.now() / 1000));
+
+
+  // Time Slider filter
+  const mapTimeFilter = ['all', 
+    ['>=', ['get', 'Detection Time'], currentEpochTime - timeFilter[1] * 3600], 
+    ['<=', ['get', 'Detection Time'], currentEpochTime - timeFilter[0] * 3600]
+  ];
 
   // Reference to the map instance
   const mapRef = useRef(null);
@@ -222,6 +234,7 @@ const MainMap = ({
               <Layer
                 id="centroids-layer"
                 type="circle"
+                filter={mapTimeFilter}
                 paint={{
                   "circle-radius": 6,
                   "circle-stroke-width": 4,

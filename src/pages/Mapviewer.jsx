@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./Mapviewer.module.css";
 import MainMap from "../components/MainMap";
 import MainMapSidebar from "../components/MainMapSidebar";
@@ -9,6 +9,7 @@ const Mapviewer = () => {
   const [showBrightness, setShowBrightness] = useState(false);
   const [selectedSatellite, setSelectedSatellite] =
     useState("suomi-npp-viirs-c2");
+  const [timeFilter, setTimeFilter] = useState([0, 24]);
 
   // Layer State
   const [selectedFire, setSelectedFire] = useState(null);
@@ -30,6 +31,8 @@ const Mapviewer = () => {
         routeData={routeData}
         setRouteData={setRouteData}
         selectedSatellite={selectedSatellite}
+        timeFilter={timeFilter}
+        setTimeFilter={setTimeFilter}
       />
 
       <MainMapSidebar
@@ -43,6 +46,8 @@ const Mapviewer = () => {
         routeData={routeData}
         selectedSatellite={selectedSatellite}
         setSelectedSatellite={setSelectedSatellite}
+        timeFilter={timeFilter}
+        setTimeFilter={setTimeFilter}
       />
     </div>
   );
