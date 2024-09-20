@@ -28,7 +28,19 @@ def parse_description(description):
                 date = datetime.strptime(value, date_format)
                 date = date.replace(tzinfo=timezone.utc)
                 value = int(date.timestamp())
-            
+
+            # Convert Confidence percentage to category
+            elif key == "Confidence [0-100%]":
+                key2 = "Confidence"
+                prct = int(value[0:len(value)-1])
+                if prct < 30:
+                    value2 = "Low"
+                elif prct >= 30 and prct < 80:
+                    value2 = "Nominal"
+                else:
+                    value2 = "High"
+                data[key2] = value2
+
             data[key] = value
             
     return data

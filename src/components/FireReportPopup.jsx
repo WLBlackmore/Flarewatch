@@ -21,7 +21,7 @@ const FireReportPopup = (props) => {
       {formattedTime && <p>Detection Time: {formattedTime}</p>}
       {fire.Sensor && <p>Satellite: {fire.Sensor}</p>}
       {(fire.Confidence || fire["Confidence [0-100%]"]) && (
-        <p>Confidence: {fire.Confidence ?? fire["Confidence [0-100%]"]}</p>
+        <p>Confidence: {fire["Confidence [0-100%]"] ?? fire.Confidence}</p>
       )}
       {fire.Scan && fire.Track && (
         <p>
