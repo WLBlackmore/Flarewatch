@@ -35,7 +35,7 @@ def parse_description(description):
                 prct = int(value[0:len(value)-1])
                 if prct < 30:
                     value2 = "Low"
-                elif prct >= 30 and prct < 80:
+                elif prct >= 30 and prct < 70:
                     value2 = "Nominal"
                 else:
                     value2 = "High"
