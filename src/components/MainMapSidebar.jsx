@@ -14,6 +14,8 @@ const MainMapSidebar = ({
   setSelectedSatellite,
   timeFilter,
   setTimeFilter,
+  showConfidence,
+  setShowConfidence,
 }) => {
   return (
     <div className={styles.sidebar}>
@@ -37,6 +39,7 @@ const MainMapSidebar = ({
           <h3>Layer Options</h3>
           <img src={layerIcon} alt="layer icon" className={styles.layerIcon} />
         </div>
+        {/* FRP toggle */}
         <label className={styles.toggle}>
           <input
             type="checkbox"
@@ -46,7 +49,7 @@ const MainMapSidebar = ({
           <span className={styles.slider}></span>
           Show FRP Markers
         </label>
-
+        {/* Heatmap toggle */}
         <label className={styles.toggle}>
           <input
             type="checkbox"
@@ -56,6 +59,17 @@ const MainMapSidebar = ({
           <span className={styles.slider}></span>
           Show Brightness Heatmap
         </label>
+
+        {/* Confidence toggle */}
+        <label className={styles.toggle}>
+          <input
+            type="checkbox"
+            checked={showConfidence}
+            onChange={() => setShowConfidence(!showConfidence)}
+          />
+          <span className={styles.slider}></span>
+          Show Sensor Confidence
+        </label>
       </div>
 
       {/* Time Filtering Section */}
@@ -63,7 +77,7 @@ const MainMapSidebar = ({
         <div className={styles.satelliteHeader}>
           <h3>Detection Time</h3>
         </div>
-        <TimeSlider timeFilter={timeFilter} setTimeFilter={setTimeFilter}/>
+        <TimeSlider timeFilter={timeFilter} setTimeFilter={setTimeFilter} />
       </div>
     </div>
   );

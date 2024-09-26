@@ -7,6 +7,7 @@ const Mapviewer = () => {
   // Filter State
   const [showFRP, setShowFRP] = useState(true);
   const [showBrightness, setShowBrightness] = useState(false);
+  const [showConfidence, setShowConfidence] = useState(false)
   const [selectedSatellite, setSelectedSatellite] =
     useState("suomi-npp-viirs-c2");
   const [timeFilter, setTimeFilter] = useState([0, 24]);
@@ -33,6 +34,8 @@ const Mapviewer = () => {
         selectedSatellite={selectedSatellite}
         timeFilter={timeFilter}
         setTimeFilter={setTimeFilter}
+        showConfidence={showConfidence}
+        setShowConfidence={setShowConfidence}
       />
 
       <MainMapSidebar
@@ -48,6 +51,8 @@ const Mapviewer = () => {
         setSelectedSatellite={setSelectedSatellite}
         timeFilter={timeFilter}
         setTimeFilter={setTimeFilter}
+        showConfidence={showConfidence}
+        setShowConfidence={setShowConfidence}
       />
     </div>
   );

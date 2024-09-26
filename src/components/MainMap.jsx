@@ -21,6 +21,8 @@ const MainMap = ({
   selectedSatellite,
   timeFilter,
   setTimeFilter,
+  showConfidence,
+  setShowConfidence,
 }) => {
   // Mapbox Configuration
   const mapApiToken = import.meta.env.VITE_MAPBOX_TOKEN;
@@ -64,7 +66,8 @@ const MainMap = ({
           feature.layer.id === "centroids-layer" ||
           feature.layer.id === "footprints-layer" ||
           feature.layer.id === "centroids-heatmap-layer" ||
-          feature.layer.id === "detection-time-layer"
+          feature.layer.id === "detection-time-layer" ||
+          feature.layer.id === "confidence-centroid-layer"
         ) {
           setSelectedFire(feature.properties);
           console.log("Selected fire:", feature.properties);
@@ -202,6 +205,7 @@ const MainMap = ({
             "footprints-layer",
             "centroids-heatmap-layer",
             "nearest-fire-stations-layer",
+            "confidence-centroid-layer"
           ]}
         >
           {/* Display FRP footprints */}
@@ -321,31 +325,36 @@ const MainMap = ({
           )}
 
           {/* Display confidence layer */}
-          <Source
-            id="confidence-centroid-source"
-            type="geojson"
-            data={centroidData}
-          >
-            <Layer
-              id="confidence-centroid-layer"
-              type="circle"
-              paint={{
-                "circle-radius": 6,
-                "circle-stroke-width": 4,
-                "circle-stroke-color": "#000000",
-                "circle-stroke-opacity": 0,
-                "circle-color": [
-                  "match",
-                  ["get", "Confidence"],
-                  "Low", "#FFE066",
-                  "Nominal", "#9ACD32",
-                  "High", "#006400", 
-                  "#FFD700"
-                ],
-                "circle-opacity": 1
-              }}
-            />
-          </Source>
+          {showConfidence && centroidData && (
+            <Source
+              id="confidence-centroid-source"
+              type="geojson"
+              data={centroidData}
+            >
+              <Layer
+                id="confidence-centroid-layer"
+                type="circle"
+                paint={{
+                  "circle-radius": 6,
+                  "circle-stroke-width": 4,
+                  "circle-stroke-color": "#000000",
+                  "circle-stroke-opacity": 0,
+                  "circle-color": [
+                    "match",
+                    ["get", "Confidence"],
+                    "Low",
+                    "#FFE066",
+                    "Nominal",
+                    "#9ACD32",
+                    "High",
+                    "#006400",
+                    "#FFD700",
+                  ],
+                  "circle-opacity": 1,
+                }}
+              />
+            </Source>
+          )}
 
           {/* Display nearest fire stations */}
           {nearestFireStations && (
