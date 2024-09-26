@@ -20,7 +20,7 @@ const MainMap = ({
   setRouteData,
   selectedSatellite,
   timeFilter,
-  setTimeFilter
+  setTimeFilter,
 }) => {
   // Mapbox Configuration
   const mapApiToken = import.meta.env.VITE_MAPBOX_TOKEN;
@@ -40,13 +40,15 @@ const MainMap = ({
   const [footprintData, setFootprintData] = useState(null);
 
   // Current time in Unix Epoch Format
-const [currentEpochTime, setCurrentEpochTime] = useState(Math.floor(Date.now() / 1000));
-
+  const [currentEpochTime, setCurrentEpochTime] = useState(
+    Math.floor(Date.now() / 1000)
+  );
 
   // Time Slider filter
-  const mapTimeFilter = ['all', 
-    ['>=', ['get', 'Detection Time'], currentEpochTime - timeFilter[1] * 3600], 
-    ['<=', ['get', 'Detection Time'], currentEpochTime - timeFilter[0] * 3600]
+  const mapTimeFilter = [
+    "all",
+    [">=", ["get", "Detection Time"], currentEpochTime - timeFilter[1] * 3600],
+    ["<=", ["get", "Detection Time"], currentEpochTime - timeFilter[0] * 3600],
   ];
 
   // Reference to the map instance
@@ -269,6 +271,7 @@ const [currentEpochTime, setCurrentEpochTime] = useState(Math.floor(Date.now() /
               <Layer
                 id="centroids-heatmap-layer"
                 type="heatmap"
+                filter={mapTimeFilter}
                 paint={{
                   "heatmap-weight": [
                     "interpolate",
@@ -316,6 +319,33 @@ const [currentEpochTime, setCurrentEpochTime] = useState(Math.floor(Date.now() /
               />
             </Source>
           )}
+
+          {/* Display confidence layer */}
+          <Source
+            id="confidence-centroid-source"
+            type="geojson"
+            data={centroidData}
+          >
+            <Layer
+              id="confidence-centroid-layer"
+              type="circle"
+              paint={{
+                "circle-radius": 6,
+                "circle-stroke-width": 4,
+                "circle-stroke-color": "#000000",
+                "circle-stroke-opacity": 0,
+                "circle-color": [
+                  "match",
+                  ["get", "Confidence"],
+                  "Low", "#FFE066",
+                  "Nominal", "#9ACD32",
+                  "High", "#006400", 
+                  "#FFD700"
+                ],
+                "circle-opacity": 1
+              }}
+            />
+          </Source>
 
           {/* Display nearest fire stations */}
           {nearestFireStations && (
