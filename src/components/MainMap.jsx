@@ -70,6 +70,7 @@ const MainMap = ({
           feature.layer.id === "confidence-centroid-layer"
         ) {
           setSelectedFire(feature.properties);
+          setFireStationNotFound("");
           console.log("Selected fire:", feature.properties);
         } else if (feature.layer.id === "nearest-fire-stations-layer") {
           setSelectedFireStation(feature.properties);
