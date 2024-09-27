@@ -44,7 +44,7 @@ def find_fire_stations():
 
     # if no fire stations found, let the user know
     if len(fire_stations) == 0:
-        return jsonify({'message': 'No fire stations found'})
+        return jsonify({'message': 'No fire stations found within a 10km radius.'})
     else:
         # Convert OSM data to GeoJSON
         geojson_data = osm_to_geojson.osm_to_geojson(osm_data)

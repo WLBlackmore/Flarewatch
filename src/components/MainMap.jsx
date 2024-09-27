@@ -103,12 +103,21 @@ const MainMap = ({
         longitude: selectedFire.Longitude,
       };
 
-      setNearestFireStations({ ...response, fireCoordinates });
-      console.log("Nearest fire stations:", nearestFireStations);
+      console.log("response message", response.message)
+
+      if (response.message) {
+        setFireStationNotFound(response.message);
+      } else {
+        setNearestFireStations({ ...response, fireCoordinates });
+        console.log("Nearest fire stations:", nearestFireStations);
+      }
     } catch (error) {
       console.error("Error finding fire stations:", error);
     }
   };
+
+  // Fire station not found state
+  const [fireStationNotFound, setFireStationNotFound] = useState("");
 
   // Find route from fire station to fire
   const handleFindRoute = async () => {
@@ -205,7 +214,7 @@ const MainMap = ({
             "footprints-layer",
             "centroids-heatmap-layer",
             "nearest-fire-stations-layer",
-            "confidence-centroid-layer"
+            "confidence-centroid-layer",
           ]}
         >
           {/* Display FRP footprints */}
@@ -386,6 +395,7 @@ const MainMap = ({
               <FireReportPopup
                 fire={selectedFire}
                 handleFindFireStations={handleFindFireStations}
+                fireStationNotFound={fireStationNotFound}
               />
             </Popup>
           )}
