@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import styles from "./MainMap.module.css";
 import ReactMapGL, { Source, Layer, Popup } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
-import axios from "axios";
 import fireStationIcon from "../assets/firestationicon.png";
 import FireReportPopup from "./FireReportPopup";
 import FireStationPopup from "./FireStationPopup";
@@ -23,11 +22,17 @@ const MainMap = ({
   setTimeFilter,
   showConfidence,
   setShowConfidence,
+  centroidData,
+  footprintData,
+  handleFindFireStations,
+  handleFindRoute,
+  fireStationNotFound,
+  setFireStationNotFound,
 }) => {
   // Mapbox Configuration
   const mapApiToken = import.meta.env.VITE_MAPBOX_TOKEN;
 
-  // Viewport state
+  // Viewport state (moved back to MainMap)
   const [viewport, setViewport] = useState({
     latitude: 45.5019,
     longitude: -73.5674,
@@ -36,10 +41,8 @@ const MainMap = ({
     height: "100%",
   });
 
-  // NASA Fire Data
-  const [allSatelliteData, setAllSatelliteData] = useState(null);
-  const [centroidData, setCentroidData] = useState(null);
-  const [footprintData, setFootprintData] = useState(null);
+  // Reference to the map instance
+  const mapRef = useRef(null);
 
   // Current time in Unix Epoch Format
   const [currentEpochTime, setCurrentEpochTime] = useState(
@@ -52,9 +55,6 @@ const MainMap = ({
     [">=", ["get", "Detection Time"], currentEpochTime - timeFilter[1] * 3600],
     ["<=", ["get", "Detection Time"], currentEpochTime - timeFilter[0] * 3600],
   ];
-
-  // Reference to the map instance
-  const mapRef = useRef(null);
 
   // Handle map click events
   const handleMapClick = (evt) => {
@@ -81,104 +81,6 @@ const MainMap = ({
       console.log("No features found at clicked location");
     }
   };
-
-  // Find nearest fire stations
-  const handleFindFireStations = async () => {
-    console.log("Finding nearest 5 fire stations");
-    console.log(selectedFire);
-
-    // Clear existing route data
-    setRouteData(null);
-
-    try {
-      const response = await axios
-        .post("http://localhost:5000/find-fire-stations", {
-          latitude: selectedFire.Latitude,
-          longitude: selectedFire.Longitude,
-        })
-        .then((response) => response.data);
-
-      // Add fire coordinates to the nearest fire stations data
-      const fireCoordinates = {
-        latitude: selectedFire.Latitude,
-        longitude: selectedFire.Longitude,
-      };
-
-      console.log("response message", response.message)
-
-      if (response.message) {
-        setFireStationNotFound(response.message);
-      } else {
-        setNearestFireStations({ ...response, fireCoordinates });
-        console.log("Nearest fire stations:", nearestFireStations);
-      }
-    } catch (error) {
-      console.error("Error finding fire stations:", error);
-    }
-  };
-
-  // Fire station not found state
-  const [fireStationNotFound, setFireStationNotFound] = useState("");
-
-  // Find route from fire station to fire
-  const handleFindRoute = async () => {
-    if (!selectedFireStation) {
-      console.log("No fire station selected");
-      return;
-    }
-
-    const stationCoordinates = {
-      latitude: selectedFireStation.latitude,
-      longitude: selectedFireStation.longitude,
-    };
-
-    const fireCoordinates = nearestFireStations.fireCoordinates;
-
-    console.log(
-      "Finding route from fire station at coordinates:",
-      stationCoordinates,
-      "to fire at coordinates:",
-      fireCoordinates
-    );
-
-    try {
-      const response = await axios.post("http://localhost:5000/find-route", {
-        stationCoordinates,
-        fireCoordinates,
-      });
-
-      // Set the route data
-      const routeGeometry = response.data.routes[0].geometry;
-      const routeFeature = {
-        type: "Feature",
-        geometry: routeGeometry,
-      };
-      console.log("Route data:", routeFeature);
-      setRouteData(routeFeature);
-    } catch (error) {
-      console.error("Error finding route:", error);
-    }
-  };
-
-  // Fetch NASA fire data on component mount
-  useEffect(() => {
-    axios.get("http://localhost:5000/get-nasa-fire-data").then((response) => {
-      const data = response.data;
-
-      // Set the centroid and footprint data
-      setAllSatelliteData(data);
-      setCentroidData(data[selectedSatellite].centroids);
-      setFootprintData(data[selectedSatellite].polygons);
-    });
-  }, []);
-
-  // Update centroid and footprint data when selected satellite changes
-  useEffect(() => {
-    if (allSatelliteData) {
-      setCentroidData(allSatelliteData[selectedSatellite].centroids);
-      setFootprintData(allSatelliteData[selectedSatellite].polygons);
-    }
-  }, [selectedSatellite, allSatelliteData]);
 
   // Handle map load event
   const handleMapLoad = (event) => {
