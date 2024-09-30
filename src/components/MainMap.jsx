@@ -219,11 +219,13 @@ const MainMap = ({
           ]}
         >
           {/* Display FRP footprints */}
-          {showFRP && footprintData && (
+          {footprintData && (
             <Source id="footprints-source" type="geojson" data={footprintData}>
               <Layer
                 id="footprints-layer"
                 type="fill"
+                filter={mapTimeFilter}
+                layout={{ visibility: showFRP ? "visible" : "none" }}
                 paint={{
                   "fill-color": [
                     "interpolate",
@@ -245,12 +247,13 @@ const MainMap = ({
           )}
 
           {/* Display FRP centroids */}
-          {showFRP && centroidData && (
+          {centroidData && (
             <Source id="centroids-source" type="geojson" data={centroidData}>
               <Layer
                 id="centroids-layer"
                 type="circle"
                 filter={mapTimeFilter}
+                layout={{ visibility: showFRP ? "visible" : "none" }}
                 paint={{
                   "circle-radius": 6,
                   "circle-stroke-width": 4,
@@ -276,7 +279,7 @@ const MainMap = ({
           )}
 
           {/* Display Brightness heatmap */}
-          {showBrightness && centroidData && (
+          {centroidData && (
             <Source
               id="centroids-heatmap-source"
               type="geojson"
@@ -286,6 +289,7 @@ const MainMap = ({
                 id="centroids-heatmap-layer"
                 type="heatmap"
                 filter={mapTimeFilter}
+                layout={{ visibility: showBrightness ? "visible" : "none" }}
                 paint={{
                   "heatmap-weight": [
                     "interpolate",
@@ -335,7 +339,7 @@ const MainMap = ({
           )}
 
           {/* Display confidence layer */}
-          {showConfidence && centroidData && (
+          {centroidData && (
             <Source
               id="confidence-centroid-source"
               type="geojson"
@@ -345,6 +349,7 @@ const MainMap = ({
               <Layer
                 id="confidence-centroid-layer"
                 type="circle"
+                layout={{ visibility: showConfidence ? "visible" : "none" }}
                 paint={{
                   "circle-radius": 6,
                   "circle-stroke-width": 4,

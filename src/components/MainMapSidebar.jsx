@@ -40,11 +40,15 @@ const MainMapSidebar = ({
           <img src={layerIcon} alt="layer icon" className={styles.layerIcon} />
         </div>
         {/* FRP toggle */}
-        <label className={styles.toggle}>
+        <label className={styles.toggle}> 
           <input
             type="checkbox"
             checked={showFRP}
-            onChange={() => setShowFRP(!showFRP)}
+            onChange={() => {
+              setShowFRP(!showFRP);
+              showBrightness && setShowBrightness(false);
+              showConfidence && setShowConfidence(false);
+            }}
           />
           <span className={styles.slider}></span>
           Show FRP Markers
@@ -54,7 +58,11 @@ const MainMapSidebar = ({
           <input
             type="checkbox"
             checked={showBrightness}
-            onChange={() => setShowBrightness(!showBrightness)}
+            onChange={() => {
+              setShowBrightness(!showBrightness)
+              showFRP && setShowFRP(false);
+              showConfidence && setShowConfidence(false);
+            }}
           />
           <span className={styles.slider}></span>
           Show Brightness Heatmap
@@ -65,7 +73,11 @@ const MainMapSidebar = ({
           <input
             type="checkbox"
             checked={showConfidence}
-            onChange={() => setShowConfidence(!showConfidence)}
+            onChange={() => {
+              setShowConfidence(!showConfidence)
+              showFRP && setShowFRP(false);
+              showBrightness && setShowBrightness(false);
+            }}
           />
           <span className={styles.slider}></span>
           Show Sensor Confidence
