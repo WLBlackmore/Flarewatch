@@ -1,13 +1,16 @@
 import React from "react";
 import styles from "./SatelliteDropdown.module.css";
 
-const SatelliteDropdown = ({ selectedSatellite, setSelectedSatellite }) => {
+const SatelliteDropdown = ({
+  selectedSatellite,
+  setSelectedSatellite
+}) => {
   const satelliteOptions = [
     { value: "suomi-npp-viirs-c2", label: "Suomi NPP VIIRS" },
     { value: "noaa-20-viirs-c2", label: "NOAA-20 VIIRS" },
     { value: "noaa-21-viirs-c2", label: "NOAA-21 VIIRS" },
     { value: "c6.1", label: "MODIS" },
-    { value: "landsat", label: "LANDSAT" }
+    { value: "landsat", label: "LANDSAT" },
   ];
 
   const handleSatelliteChange = (e) => {

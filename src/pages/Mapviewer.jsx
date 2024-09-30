@@ -9,7 +9,8 @@ const Mapviewer = () => {
   const [showFRP, setShowFRP] = useState(true);
   const [showBrightness, setShowBrightness] = useState(false);
   const [showConfidence, setShowConfidence] = useState(false);
-  const [selectedSatellite, setSelectedSatellite] = useState("suomi-npp-viirs-c2");
+  const [selectedSatellite, setSelectedSatellite] =
+    useState("suomi-npp-viirs-c2");
   const [timeFilter, setTimeFilter] = useState([0, 24]);
 
   // Layer State
@@ -45,6 +46,15 @@ const Mapviewer = () => {
       setFootprintData(allSatelliteData[selectedSatellite].polygons);
     }
   }, [selectedSatellite, allSatelliteData]);
+
+  // Clear the selected fields when the satellite changes
+  useEffect(() => {
+    setSelectedFire(null);
+    setSelectedFireStation(null);
+    setNearestFireStations(null);
+    setRouteData(null);
+    setFireStationNotFound("");
+  }, [selectedSatellite]);
 
   // Find nearest fire stations
   const handleFindFireStations = async () => {

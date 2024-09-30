@@ -16,7 +16,7 @@ const MainMapSidebar = ({
   setTimeFilter,
   showConfidence,
   setShowConfidence,
-}) => {
+}) => { 
   return (
     <div className={styles.sidebar}>
       <h2>Wildfire Map Controls</h2>
@@ -40,7 +40,7 @@ const MainMapSidebar = ({
           <img src={layerIcon} alt="layer icon" className={styles.layerIcon} />
         </div>
         {/* FRP toggle */}
-        <label className={styles.toggle}> 
+        <label className={styles.toggle}>
           <input
             type="checkbox"
             checked={showFRP}
@@ -59,7 +59,7 @@ const MainMapSidebar = ({
             type="checkbox"
             checked={showBrightness}
             onChange={() => {
-              setShowBrightness(!showBrightness)
+              setShowBrightness(!showBrightness);
               showFRP && setShowFRP(false);
               showConfidence && setShowConfidence(false);
             }}
@@ -74,7 +74,7 @@ const MainMapSidebar = ({
             type="checkbox"
             checked={showConfidence}
             onChange={() => {
-              setShowConfidence(!showConfidence)
+              setShowConfidence(!showConfidence);
               showFRP && setShowFRP(false);
               showBrightness && setShowBrightness(false);
             }}
