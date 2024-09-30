@@ -340,6 +340,7 @@ const MainMap = ({
               id="confidence-centroid-source"
               type="geojson"
               data={centroidData}
+              filter={mapTimeFilter}
             >
               <Layer
                 id="confidence-centroid-layer"
