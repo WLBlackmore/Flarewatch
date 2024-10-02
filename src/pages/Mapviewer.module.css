@@ -2,5 +2,6 @@
     display: flex;
     height: 93vh;  /* Full screen height */
     background-color: #2E112D;  /* Dark background from your palette */
+    position: relative;
   }
   

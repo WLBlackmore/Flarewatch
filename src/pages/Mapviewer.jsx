@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styles from "./Mapviewer.module.css";
 import MainMap from "../components/MainMap";
 import MainMapSidebar from "../components/MainMapSidebar";
+import MapLegend from "../components/MapLegend";
 import axios from "axios";
 
 const Mapviewer = () => {
@@ -133,6 +134,7 @@ const Mapviewer = () => {
 
   return (
     <div className={styles.mapviewerContainer}>
+      <MapLegend />
       <MainMap
         showFRP={showFRP}
         showBrightness={showBrightness}

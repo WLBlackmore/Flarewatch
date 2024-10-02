@@ -31,7 +31,6 @@ const FireReportPopup = (props) => {
       )}
       {fire["WRS-2 Path"] && <p>WRS-2 Path: {fire["WRS-2 Path"]}</p>}
       {fire["WRS-2 Row"] && <p>WRS-2 Row: {fire["WRS-2 Row"]}</p>}
-
       {fireStationNotFound ? (
         <p className={styles.notFound}>{fireStationNotFound}</p>
       ) : (
