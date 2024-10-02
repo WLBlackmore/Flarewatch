@@ -7,8 +7,8 @@
   }
   
   .mapPlaceholder {
-    width: 90%;  /* Control the width of the map placeholder */
-    height: 84%;  /* Control the height of the map */
+    width: 100%;  /* Control the width of the map placeholder */
+    height: 100%;  /* Control the height of the map */
     background-color: grey;  /* Grey placeholder for now */
     display: flex;
     justify-content: center;
