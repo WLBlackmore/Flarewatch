@@ -1,0 +1,30 @@
+.high {
+    height: 12px;
+    width: 12px;
+    background-color: #FF0000;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.medium {
+    height: 12px;
+    width: 12px;
+    background-color: #FFA500;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.low {
+    height: 12px;
+    width: 12px;
+    background-color: #FFFF99;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.container {
+    display: flex;
+    justify-content: left;
+    flex-direction: column;
+    gap: 5px;
+}
