@@ -5,7 +5,6 @@ import FrpLegend from "./legends/FrpLegend";
 const MapLegend = () => {
   return (
     <div className={styles.legend}>
-      <h1>Map Legend</h1>
       <FrpLegend />
     </div>
   );

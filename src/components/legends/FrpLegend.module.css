@@ -1,30 +1,34 @@
-.high {
+.high, .medium, .low {
     height: 12px;
     width: 12px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  
+  .high {
     background-color: #FF0000;
-    border-radius: 50%;
-    display: inline-block;
-}
-
-.medium {
-    height: 12px;
-    width: 12px;
+  }
+  
+  .medium {
     background-color: #FFA500;
-    border-radius: 50%;
-    display: inline-block;
-}
-
-.low {
-    height: 12px;
-    width: 12px;
+  }
+  
+  .low {
     background-color: #FFFF99;
-    border-radius: 50%;
-    display: inline-block;
-}
-
-.container {
+  }
+  
+  .container {
     display: flex;
-    justify-content: left;
     flex-direction: column;
-    gap: 5px;
-}
+  }
+  
+  .legendItem {
+    display: flex;
+    align-items: center;
+    gap: 8px; 
+  }
+
+  p {
+    margin: 0;
+  }
+  
