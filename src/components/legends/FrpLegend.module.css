@@ -32,3 +32,14 @@
     margin: 0;
   }
   
+  .container h3 {
+    font-family: 'Roboto', sans-serif;
+    margin-bottom: 10px;
+  }
+  .legendItem p {
+    font-family: 'Roboto', sans-serif;
+    margin-left: 8px;
+  }
+  .legendItem {
+    margin-bottom: 8px;
+  }  
