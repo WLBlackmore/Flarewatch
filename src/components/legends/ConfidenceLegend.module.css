@@ -1,0 +1,45 @@
+.high, .medium, .low {
+    height: 12px;
+    width: 12px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  
+  .high {
+    background-color: #006400;
+  }
+  
+  .medium {
+    background-color: #9ACD32;
+  }
+  
+  .low {
+    background-color: #FFE066;
+  }
+  
+  .container {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .legendItem {
+    display: flex;
+    align-items: center;
+    gap: 8px; 
+  }
+
+  p {
+    margin: 0;
+  }
+  
+  .container h3 {
+    font-family: 'Roboto', sans-serif;
+    margin-bottom: 10px;
+  }
+  .legendItem p {
+    font-family: 'Roboto', sans-serif;
+    margin-left: 8px;
+  }
+  .legendItem {
+    margin-bottom: 8px;
+  }  
