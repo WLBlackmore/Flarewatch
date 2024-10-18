@@ -134,7 +134,11 @@ const Mapviewer = () => {
 
   return (
     <div className={styles.mapviewerContainer}>
-      <MapLegend />
+      <MapLegend 
+      showFRP={showFRP}
+      showBrightness={showBrightness}
+      showConfidence={showConfidence}
+      />
       <MainMap
         showFRP={showFRP}
         showBrightness={showBrightness}

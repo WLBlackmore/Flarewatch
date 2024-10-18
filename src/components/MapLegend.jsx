@@ -1,11 +1,11 @@
 import React from "react";
 import styles from "./MapLegend.module.css";
-import FrpLegend from "./legends/FrpLegend";
+import FprLegend from "./legends/FprLegend";
 
-const MapLegend = () => {
+const MapLegend = ({showFRP, showBrightness, showConfidence}) => {
   return (
     <div className={styles.legend}>
-      <FrpLegend />
+     <FprLegend></FprLegend>
     </div>
   );
 };

@@ -1,7 +1,7 @@
 import React from "react";
-import styles from "./FrpLegend.module.css";
+import styles from "./FprLegend.module.css";
 
-const FrpLegend = () => {
+const FprLegend = () => {
   return (
     <div className={styles.container}>
         <h3>Fire Radiative Power</h3>
@@ -21,4 +21,4 @@ const FrpLegend = () => {
   );
 };
 
-export default FrpLegend;
+export default FprLegend;
