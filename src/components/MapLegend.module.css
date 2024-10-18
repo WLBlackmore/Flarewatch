@@ -26,3 +26,7 @@
     opacity: 1;
   }
 }
+
+p {
+  margin-top: 0px !important;
+}
