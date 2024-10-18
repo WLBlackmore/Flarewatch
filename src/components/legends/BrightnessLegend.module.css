@@ -1,0 +1,33 @@
+.gradientContainer {
+  width: 100%;
+  height: 20px;
+  background: linear-gradient(
+    to right,
+    rgba(33, 102, 172, 0),
+    rgb(103, 169, 207),
+    rgb(253, 219, 199),
+    rgb(239, 138, 98),
+    rgb(178, 24, 43)
+  );
+  border-radius: 3px;
+}
+
+.labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  font-size: 12px;
+}
+
+.labels p {
+  text-align: center;
+}
+
+p {
+    font-family: 'Roboto', sans-serif;
+}
+
+h3 {
+    font-family: 'Roboto', sans-serif;
+}
