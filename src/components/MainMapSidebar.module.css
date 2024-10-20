@@ -111,12 +111,18 @@
 }
 
 .section.layers {
-  animation-delay: 0.4s;
+  animation-delay: 0.3s;
 }
 
 .section.time {
-  animation-delay: 0.6s;
+  animation-delay: 0.4s;
 }
 
+.section.report {
+  animation-delay: 0.5s;
+  padding: 0px;
+  background-color: transparent;
+
+}
 
 

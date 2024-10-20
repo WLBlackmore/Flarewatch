@@ -4,6 +4,7 @@ import SatelliteDropdown from "./SatelliteDropdown";
 import satelliteIcon from "../assets/satelliteIcon.png";
 import layerIcon from "../assets/layerIcon.png";
 import TimeSlider from "./TimeSlider";
+import FireReportModal from "./FireReportModal";
 
 const MainMapSidebar = ({
   showFRP,
@@ -90,6 +91,9 @@ const MainMapSidebar = ({
           <h3>Detection Time</h3>
         </div>
         <TimeSlider timeFilter={timeFilter} setTimeFilter={setTimeFilter} />
+      </div>
+      <div className={`${styles.section} ${styles.report}`}>
+        <FireReportModal />
       </div>
     </div>
   );
