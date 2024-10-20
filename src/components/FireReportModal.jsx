@@ -7,14 +7,20 @@ const FireReportModal = () => {
 
   const toggleModal = () => {
     if (!showModal) {
-      // Disable scrolling
+      // Calculate the scrollbar width
+      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth + 1;
+  
+      // Disable scrolling and adjust for scrollbar width
       document.body.style.overflow = 'hidden';
+      document.body.style.paddingRight = `${scrollbarWidth}px`;
     } else {
-      // Enable scrolling
+      // Enable scrolling and reset padding
       document.body.style.overflow = 'unset';
+      document.body.style.paddingRight = '0px';
     }
     setShowModal(!showModal);
   };
+  
 
   // Modal content using React Portal
   const modalContent = (
