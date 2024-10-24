@@ -79,9 +79,47 @@ def get_nasa_fire_data():
     sattelite_data_geojson = combine_nasa_firms_geojson()
     return jsonify(sattelite_data_geojson)
     
+# Fire report service
 
+@app.route('/firereports', methods=['POST'])
+def post_fire_report():
+    # Get data from request
+    data = request.get_json()
+    longitude = data['longitude']
+    latitude = data['latitude']
+    severity = data['severity']
+    description = data['description']
+    phone = data['phone']
     
+    # Save data to PostGis database
 
+    return jsonify({'message': 'Fire report submitted successfully'})
+
+@app.route('/firereports', methods=['GET'])
+def get_fire_reports():
+    # Get data from PostGis database
+
+    return jsonify({'message': 'Fire reports fetched successfully'})
+
+@app.route('/firereports/<id>', methods=['GET'])
+def get_fire_report(id):
+    # Get data from PostGis database
+
+    return jsonify({'message': 'Fire report fetched successfully'})
+
+@app.route('/firereports/<id>', methods=['PUT'])
+def update_fire_report(id):
+    # Get data from request
+    data = request.get_json()
+    longitude = data['longitude']
+    latitude = data['latitude']
+    severity = data['severity']
+    description = data['description']
+    phone = data['phone']
+
+    # Update data in PostGis database
+
+    return jsonify({'message': 'Fire report updated successfully'})
 
 if __name__ == '__main__':
     app.run(debug=True)
