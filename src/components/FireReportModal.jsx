@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import styles from "./FireReportModal.module.css";
+import axios from "axios";
 
 const FireReportModal = () => {
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({
-    xCoord: "",
-    yCoord: "",
+    longitude: "",
+    latitude: "",
     severity: "Low",
     description: "",
     phone: "",
@@ -14,15 +15,11 @@ const FireReportModal = () => {
 
   const toggleModal = () => {
     if (!showModal) {
-      // Calculate the scrollbar width
       const scrollbarWidth =
         window.innerWidth - document.documentElement.clientWidth + 1;
-
-      // Disable scrolling and adjust for scrollbar width
       document.body.style.overflow = "hidden";
       document.body.style.paddingRight = `${scrollbarWidth}px`;
     } else {
-      // Enable scrolling and reset padding
       document.body.style.overflow = "unset";
       document.body.style.paddingRight = "0px";
     }
@@ -36,22 +33,24 @@ const FireReportModal = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    // Validate form data
-    if (!formData.xCoord || !formData.yCoord || !formData.description) {
+    if (!formData.longitude || !formData.latitude || !formData.description) {
       alert("Please fill in all required fields");
       return;
     }
-    
     console.log(formData);
+    axios.post("http://localhost:5000/firereports", formData).then((res) => {
+      console.log(res);
+    });
+    setFormData({
+      longitude: "",
+      latitude: "",
+      severity: "Low",
+      description: "",
+      phone: "",
+    });
     toggleModal();
-  }
+  };
 
-
-
-
-
-  // Modal content using React Portal
   const modalContent = (
     <div className={styles.modal}>
       <div className={styles.overlay} onClick={toggleModal}>
@@ -60,27 +59,27 @@ const FireReportModal = () => {
           onClick={(e) => e.stopPropagation()}
         >
           <h2>Report Fire</h2>
-          <form className={styles.form}  onSubmit={handleSubmit}>
+          <form className={styles.form} onSubmit={handleSubmit}>
             <div className={styles.formGroup}>
-              <label>X Coordinate *</label>
+              <label>Longitude *</label>
               <input
                 type="text"
-                name="xCoord"
-                value={formData.xCoord}
+                name="longitude"
+                value={formData.longitude}
                 onChange={handleChange}
-                placeholder="Enter X Coordinate"
+                placeholder="Enter Longitude"
                 required
               />
             </div>
 
             <div className={styles.formGroup}>
-              <label>Y Coordinate *</label>
+              <label>Latitude *</label>
               <input
                 type="text"
-                name="yCoord"
-                value={formData.yCoord}
+                name="latitude"
+                value={formData.latitude}
                 onChange={handleChange}
-                placeholder="Enter Y Coordinate"
+                placeholder="Enter Latitude"
                 required
               />
             </div>
@@ -119,7 +118,9 @@ const FireReportModal = () => {
                 placeholder="Enter Phone Number"
               />
             </div>
-            <button type="submit" className={styles.submitBtn}>Submit Report</button>
+            <button type="submit" className={styles.submitBtn}>
+              Submit Report
+            </button>
           </form>
 
           <button className={styles.closeModal} onClick={toggleModal}>

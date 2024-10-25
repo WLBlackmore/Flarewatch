@@ -90,6 +90,8 @@ def post_fire_report():
     severity = data['severity']
     description = data['description']
     phone = data['phone']
+
+    print(data)
     
     # Save data to PostGis database
 
