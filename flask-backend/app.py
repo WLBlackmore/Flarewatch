@@ -7,10 +7,29 @@ import os
 import json
 from fetch_nasa_firms_data import combine_nasa_firms_geojson
 
-app = Flask(__name__)
-CORS(app)
+# Database imports
+from models import db, FireReport
+from config import DATABASE_URL
+
+# Load environment variables
 load_dotenv()
 
+# Initialize Flask app and enable CORS
+app = Flask(__name__)
+CORS(app)
+
+# Configure SQLAlchemy database
+app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# Initialize SQLAlchemy database
+db.init_app(app)
+
+# Create tables
+with app.app_context():
+    db.create_all()
+
+# Mapbox token
 mapbox_token = os.getenv('MAPBOX_TOKEN')
 
 @app.route('/')
