@@ -112,7 +112,20 @@ def post_fire_report():
 
     print(data)
     
-    # Save data to PostGis database
+    # Create a new FireReport object
+    location = f'SRID=4326;POINT({longitude} {latitude})'
+    fire_report = FireReport(
+        longitude=longitude,
+        latitude=latitude,
+        severity=severity,
+        description=description,
+        phone_number=phone,
+        location=location
+    )
+
+    # Save the new report to the database
+    db.session.add(fire_report)
+    db.session.commit()
 
     return jsonify({'message': 'Fire report submitted successfully'})
 
