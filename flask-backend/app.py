@@ -10,6 +10,7 @@ from fetch_nasa_firms_data import combine_nasa_firms_geojson
 # Database imports
 from models import db, FireReport
 from config import DATABASE_URL
+from sqlalchemy import text
 
 # Load environment variables
 load_dotenv()
@@ -131,9 +132,37 @@ def post_fire_report():
 
 @app.route('/firereports', methods=['GET'])
 def get_fire_reports():
-    # Get data from PostGis database
+    # Use PostGIS to build a GeoJSON feature collection
+    result = db.session.execute(
+        text("""
+        SELECT json_build_object(
+            'type', 'FeatureCollection',
+            'features', json_agg(
+                json_build_object(
+                    'type', 'Feature',
+                    'geometry', ST_AsGeoJSON(location)::json,
+                    'properties', json_build_object(
+                        'id', id,
+                        'severity', severity,
+                        'description', description,
+                        'phone_number', phone_number,
+                        'is_cleared', iscleared,
+                        'cleared_by', clearedby,
+                        'clear_remarks', clearremarks,
+                        'updated_remarks', updatedremarks,
+                        'created_at', created_at
+                    )
+                )
+            )
+        ) AS geojson
+        FROM fire_reports;
+        """)
+    ).fetchone()
 
-    return jsonify({'message': 'Fire reports fetched successfully'})
+    # Extract GeoJSON from the result
+    geojson = result.geojson if result else {"type": "FeatureCollection", "features": []}
+
+    return jsonify(geojson), 200
 
 @app.route('/firereports/<id>', methods=['GET'])
 def get_fire_report(id):
