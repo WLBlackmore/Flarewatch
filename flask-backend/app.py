@@ -130,7 +130,7 @@ def post_fire_report():
 
     return jsonify({'message': 'Fire report submitted successfully'})
 
-@app.route('/firereports', methods=['GET'])
+@app.route('/firereports/active', methods=['GET'])
 def get_fire_reports():
     # Use PostGIS to build a GeoJSON feature collection
     result = db.session.execute(
@@ -155,7 +155,8 @@ def get_fire_reports():
                 )
             )
         ) AS geojson
-        FROM fire_reports;
+        FROM fire_reports
+        WHERE iscleared = 'f';
         """)
     ).fetchone()
 
