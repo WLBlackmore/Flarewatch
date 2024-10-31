@@ -25,20 +25,30 @@ const Mapviewer = () => {
   const [centroidData, setCentroidData] = useState(null);
   const [footprintData, setFootprintData] = useState(null);
 
+  // User reported fire data
+  const [activeReportedFires, setActiveReportedFires] = useState(null);
+
   // Fire station not found state
   const [fireStationNotFound, setFireStationNotFound] = useState("");
 
-  // Fetch NASA fire data on component mount
+  // Fetch NASA fire data and user reported fire on component mount
   useEffect(() => {
-    axios.get("http://localhost:5000/get-nasa-fire-data").then((response) => {
-      const data = response.data;
+    Promise.all([
+        axios.get("http://localhost:5000/get-nasa-fire-data"),
+        axios.get("http://localhost:5000/firereports/active")
+    ]).then(([satelliteResponse, reportResponse]) => {
+        const satelliteData = satelliteResponse.data;
+        const reportData = reportResponse.data;
 
-      // Set the centroid and footprint data
-      setAllSatelliteData(data);
-      setCentroidData(data[selectedSatellite].centroids);
-      setFootprintData(data[selectedSatellite].polygons);
-    });
-  }, []);
+        console.log(reportData)
+
+        setAllSatelliteData(satelliteData);
+        setCentroidData(satelliteData[selectedSatellite].centroids);
+        setFootprintData(satelliteData[selectedSatellite].polygons);
+        setActiveReportedFires(reportData);
+    }).catch((error) => console.error("Error fetching data:", error));
+}, []);
+
 
   // Update centroid and footprint data when selected satellite changes
   useEffect(() => {
@@ -134,10 +144,10 @@ const Mapviewer = () => {
 
   return (
     <div className={styles.mapviewerContainer}>
-      <MapLegend 
-      showFRP={showFRP}
-      showBrightness={showBrightness}
-      showConfidence={showConfidence}
+      <MapLegend
+        showFRP={showFRP}
+        showBrightness={showBrightness}
+        showConfidence={showConfidence}
       />
       <MainMap
         showFRP={showFRP}
