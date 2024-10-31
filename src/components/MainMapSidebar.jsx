@@ -17,6 +17,8 @@ const MainMapSidebar = ({
   setTimeFilter,
   showConfidence,
   setShowConfidence,
+  showActiveReportedFires,
+  setShowActiveReportedFires
 }) => { 
   return (
     <div className={styles.sidebar}>
@@ -82,6 +84,19 @@ const MainMapSidebar = ({
           />
           <span className={styles.slider}></span>
           Show Sensor Confidence
+        </label>
+
+        {/* Fire reports toggle */}
+        <label className={styles.toggle}>
+          <input
+            type="checkbox"
+            checked={showActiveReportedFires}
+            onChange={() => {
+              setShowActiveReportedFires(!showActiveReportedFires);
+            }}
+          />
+          <span className={styles.slider}></span>
+          Show User Reported Fires
         </label>
       </div>
 

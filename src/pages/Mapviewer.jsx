@@ -13,6 +13,7 @@ const Mapviewer = () => {
   const [selectedSatellite, setSelectedSatellite] =
     useState("suomi-npp-viirs-c2");
   const [timeFilter, setTimeFilter] = useState([0, 24]);
+  const [showActiveReportedFires, setShowActiveReportedFires] = useState(false)
 
   // Layer State
   const [selectedFire, setSelectedFire] = useState(null);
@@ -171,6 +172,7 @@ const Mapviewer = () => {
         handleFindRoute={handleFindRoute}
         fireStationNotFound={fireStationNotFound}
         setFireStationNotFound={setFireStationNotFound}
+        showActiveReportedFires={showActiveReportedFires}
       />
 
       <MainMapSidebar
@@ -188,6 +190,8 @@ const Mapviewer = () => {
         setTimeFilter={setTimeFilter}
         showConfidence={showConfidence}
         setShowConfidence={setShowConfidence}
+        showActiveReportedFires={showActiveReportedFires}
+        setShowActiveReportedFires={setShowActiveReportedFires}
       />
     </div>
   );

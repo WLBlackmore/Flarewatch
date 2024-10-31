@@ -5,12 +5,13 @@
   color: #ffffff;
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 25px;
 }
 
 .sidebar h2 {
-  margin-bottom: 10px;
+  margin-bottom: 0px;
   font-size: 24px;
+  margin-top: 0px;
 }
 
 .section h3 {
