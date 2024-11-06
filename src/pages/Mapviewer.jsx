@@ -173,6 +173,7 @@ const Mapviewer = () => {
         fireStationNotFound={fireStationNotFound}
         setFireStationNotFound={setFireStationNotFound}
         showActiveReportedFires={showActiveReportedFires}
+        activeReportedFires={activeReportedFires}
       />
 
       <MainMapSidebar

@@ -28,6 +28,8 @@ const MainMap = ({
   handleFindRoute,
   fireStationNotFound,
   setFireStationNotFound,
+  showActiveReportedFires,
+  activeReportedFires,
 }) => {
   // Mapbox Configuration
   const mapApiToken = import.meta.env.VITE_MAPBOX_TOKEN;
@@ -269,6 +271,25 @@ const MainMap = ({
                     "#FFD700",
                   ],
                   "circle-opacity": 1,
+                }}
+              />
+            </Source>
+          )}
+
+          {/* Display user reported fires layer */}
+          {activeReportedFires && (
+            <Source id="user-reported-source" type="geojson" data={activeReportedFires}>
+              <Layer
+                id="user-reported-layer"
+                type="circle"
+                layout={{ visibility: showActiveReportedFires ? "visible" : "none" }}
+                paint={{
+                  "circle-radius": 6,
+                  "circle-stroke-width": 4,
+                  "circle-stroke-color": "#000000",
+                  "circle-stroke-opacity": 0,
+                  "circle-color": "#0000FF",
+                  "circle-opacity": 0.7,
                 }}
               />
             </Source>
