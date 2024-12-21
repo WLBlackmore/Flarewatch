@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import styles from "./FireReportModal.module.css";
 import axios from "axios";
+import currentlocationiamge from "../assets/currentlocation.png";
 
 const FireReportModal = () => {
   const [showModal, setShowModal] = useState(false);
@@ -12,6 +13,25 @@ const FireReportModal = () => {
     description: "",
     phone: "",
   });
+
+  const handleGetCurrentLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(geoSuccess, geoError);
+    } else {
+      console.log("Geolocation not supported");
+    }
+  }
+
+  const geoSuccess = (position) => {
+    const latitude = position.coords.latitude;
+    const longitude = position.coords.longitude;
+    console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
+    setFormData({ ...formData, latitude, longitude });
+  }
+  
+  const geoError = () => {
+    console.log("Unable to retrieve your location");
+  }
 
   const toggleModal = () => {
     if (!showModal) {
@@ -85,7 +105,12 @@ const FireReportModal = () => {
               />
             </div>
 
-            
+            <div className={styles.formGroup}>
+              <button className={styles.currentLocationBtn} onClick={handleGetCurrentLocation}>
+               <img src={currentlocationiamge} alt="current location" />
+               Use Current Location
+              </button>
+            </div>
 
             <div className={styles.formGroup}>
               <label>Severity</label>
