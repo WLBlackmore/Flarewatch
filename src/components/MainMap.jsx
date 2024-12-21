@@ -77,7 +77,8 @@ const MainMap = ({
         } else if (feature.layer.id === "nearest-fire-stations-layer") {
           setSelectedFireStation(feature.properties);
           console.log("Selected fire station:", feature.properties);
-        }
+        } else if (feature.layer.id === "user-reported-layer") {
+          console.log("Selected user reported fire:", feature); }
       }
     } else {
       console.log("No features found at clicked location");
@@ -120,6 +121,7 @@ const MainMap = ({
             "centroids-heatmap-layer",
             "nearest-fire-stations-layer",
             "confidence-centroid-layer",
+            "user-reported-layer",
           ]}
         >
           {/* Display FRP footprints */}

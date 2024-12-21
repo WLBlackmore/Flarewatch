@@ -60,6 +60,19 @@ const FireReportModal = () => {
         >
           <h2>Report Fire</h2>
           <form className={styles.form} onSubmit={handleSubmit}>
+           
+          <div className={styles.formGroup}>
+              <label>Latitude *</label>
+              <input
+                type="text"
+                name="latitude"
+                value={formData.latitude}
+                onChange={handleChange}
+                placeholder="Enter Latitude"
+                required
+              />
+            </div>
+
             <div className={styles.formGroup}>
               <label>Longitude *</label>
               <input
@@ -72,17 +85,7 @@ const FireReportModal = () => {
               />
             </div>
 
-            <div className={styles.formGroup}>
-              <label>Latitude *</label>
-              <input
-                type="text"
-                name="latitude"
-                value={formData.latitude}
-                onChange={handleChange}
-                placeholder="Enter Latitude"
-                required
-              />
-            </div>
+            
 
             <div className={styles.formGroup}>
               <label>Severity</label>

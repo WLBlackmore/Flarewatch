@@ -150,7 +150,9 @@ def get_fire_reports():
                         'cleared_by', clearedby,
                         'clear_remarks', clearremarks,
                         'updated_remarks', updatedremarks,
-                        'created_at', created_at
+                        'created_at', created_at,
+                        'longitude', longitude,
+                        'latitude', latitude
                     )
                 )
             )
@@ -162,6 +164,8 @@ def get_fire_reports():
 
     # Extract GeoJSON from the result
     geojson = result.geojson if result else {"type": "FeatureCollection", "features": []}
+
+    print(geojson)
 
     return jsonify(geojson), 200
 
