@@ -79,8 +79,8 @@ const Mapviewer = () => {
     try {
       const response = await axios
         .post("http://localhost:5000/find-fire-stations", {
-          latitude: selectedFire.Latitude,
-          longitude: selectedFire.Longitude,
+          latitude: selectedFire.Latitude ? selectedFire.Latitude : selectedFire.latitude,
+          longitude: selectedFire.Longitude ? selectedFire.Longitude : selectedFire.longitude,
         })
         .then((response) => response.data);
 

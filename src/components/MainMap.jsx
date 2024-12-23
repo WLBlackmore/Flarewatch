@@ -78,7 +78,10 @@ const MainMap = ({
           setSelectedFireStation(feature.properties);
           console.log("Selected fire station:", feature.properties);
         } else if (feature.layer.id === "user-reported-layer") {
-          console.log("Selected user reported fire:", feature); }
+          console.log("Selected user reported fire:", feature); 
+          setSelectedFire(feature.properties);
+          setFireStationNotFound("");
+        }
       }
     } else {
       console.log("No features found at clicked location");
@@ -319,8 +322,9 @@ const MainMap = ({
           {/* Fire popup logic */}
           {selectedFire && (
             <Popup
-              latitude={selectedFire.Latitude}
-              longitude={selectedFire.Longitude}
+            // jank fix for different json capitalization - need to fix
+              latitude={selectedFire.Latitude ? selectedFire.Latitude : selectedFire.latitude}
+              longitude={selectedFire.Longitude ? selectedFire.Longitude : selectedFire.longitude}
               onClose={() => setSelectedFire(null)}
               closeOnClick={false}
             >
