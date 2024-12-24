@@ -86,8 +86,8 @@ const Mapviewer = () => {
 
       // Add fire coordinates to the nearest fire stations data
       const fireCoordinates = {
-        latitude: selectedFire.Latitude,
-        longitude: selectedFire.Longitude,
+        latitude: selectedFire.Latitude ? selectedFire.Latitude : selectedFire.latitude,
+        longitude: selectedFire.Longitude ? selectedFire.Longitude : selectedFire.longitude,
       };
 
       console.log("response message", response.message);
