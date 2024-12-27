@@ -3,6 +3,9 @@ import styles from "./MainMap.module.css";
 import ReactMapGL, { Source, Layer, Popup } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import fireStationIcon from "../assets/firestationicon.png";
+import redUserIcon from "../assets/reduser.png";
+import yellowUserIcon from "../assets/yellowuser.png";
+import orangeUserIcon from "../assets/orangeuser.png";
 import FireReportPopup from "./FireReportPopup";
 import FireStationPopup from "./FireStationPopup";
 
@@ -105,6 +108,40 @@ const MainMap = ({
         map.addImage("firetruck-icon", image);
       });
     }
+
+     // Add the red user icon to the map
+     if (!map.hasImage("red-user-icon")) {
+      map.loadImage(redUserIcon, (error, image) => {
+        if (error) {
+          console.error("Error loading firetruck icon:", error);
+          return;
+        }
+        map.addImage("red-user-icon", image);
+      });
+    }
+
+    // Add the orange user icon to the map
+    if (!map.hasImage("orange-user-icon")) {
+      map.loadImage(orangeUserIcon, (error, image) => {
+        if (error) {
+          console.error("Error loading firetruck icon:", error);
+          return;
+        }
+        map.addImage("orange-user-icon", image);
+      });
+    }
+
+    // Add the yellow user icon to the map
+    if (!map.hasImage("yellow-user-icon")) {
+      map.loadImage(yellowUserIcon, (error, image) => {
+        if (error) {
+          console.error("Error loading firetruck icon:", error);
+          return;
+        }
+        map.addImage("yellow-user-icon", image);
+      });
+    }
+    
   };
 
   return (
@@ -286,15 +323,19 @@ const MainMap = ({
             <Source id="user-reported-source" type="geojson" data={activeReportedFires}>
               <Layer
                 id="user-reported-layer"
-                type="circle"
-                layout={{ visibility: showActiveReportedFires ? "visible" : "none" }}
-                paint={{
-                  "circle-radius": 6,
-                  "circle-stroke-width": 4,
-                  "circle-stroke-color": "#000000",
-                  "circle-stroke-opacity": 0,
-                  "circle-color": "#0000FF",
-                  "circle-opacity": 0.7,
+                type="symbol"
+                layout={{ 
+                  "visibility": showActiveReportedFires ? "visible" : "none",
+                  "icon-image": [
+                    "match",
+                    ["get", "severity"],
+                    "Low", "yellow-user-icon",
+                    "Medium", "orange-user-icon",
+                    "High", "red-user-icon",
+                    "yellow-user-icon"
+                  ],
+                  "icon-size": 0.06,
+                  "icon-allow-overlap": true,
                 }}
               />
             </Source>
