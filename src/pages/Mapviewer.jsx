@@ -149,6 +149,7 @@ const Mapviewer = () => {
         showFRP={showFRP}
         showBrightness={showBrightness}
         showConfidence={showConfidence}
+        showActiveReportedFires={showActiveReportedFires}
       />
       <MainMap
         showFRP={showFRP}

@@ -1,0 +1,39 @@
+.high, .medium, .low {
+    height: 13px;
+    width: 13px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  
+.high > img, .medium > img, .low > img {
+    height: 100%;
+    display: block;
+    margin: auto 0;
+}
+  
+  .container {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .legendItem {
+    display: flex;
+    align-items: center;
+    gap: 8px; 
+  }
+
+  p {
+    margin: 0;
+  }
+  
+  .container h3 {
+    font-family: 'Roboto', sans-serif;
+    margin-bottom: 10px;
+  }
+  .legendItem p {
+    font-family: 'Roboto', sans-serif;
+    margin-left: 8px;
+  }
+  .legendItem {
+    margin-bottom: 8px;
+  }  
