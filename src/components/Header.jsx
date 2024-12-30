@@ -28,10 +28,13 @@ const Header = () => {
                     <NavLink to='/'>Home</NavLink>
                 </li>
                 <li>
+                    <NavLink to='/mapviewer'>Mapviewer</NavLink>
+                </li>
+                <li>
                     <NavLink to='/dashboard'>Dashboard</NavLink>
                 </li>
                 <li>
-                    <NavLink to='/mapviewer'>Mapviewer</NavLink>
+                    <NavLink to='/news'>News</NavLink>
                 </li>
                 <li>
                     <NavLink to='/about'>About</NavLink>
