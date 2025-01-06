@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from './pages/Home.jsx';
 import Dashboard from './pages/Dashboard.jsx';
+import News from './pages/News.jsx';
 import Mapviewer from './pages/Mapviewer.jsx';
 import About from './pages/About.jsx';
 import RootLayout from './RootLayout.jsx';
@@ -17,7 +18,7 @@ const router = createBrowserRouter([
       { path: "/", element: <Home/> },
       { path: "/mapviewer", element: <Mapviewer/> },
       { path: "/dashboard", element: <Dashboard/> },
-      { path: "/news", element: <h1>News</h1>},
+      { path: "/news", element: <News/>},
       { path: "/about", element: <About/> }
     ]
   }

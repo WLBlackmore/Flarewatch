@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 import os
 import json
 from fetch_nasa_firms_data import combine_nasa_firms_geojson
+from news import get_top_wildfire_headlines
 
 # Database imports
 from models import db, FireReport
@@ -188,6 +189,12 @@ def update_fire_report(id):
     # Update data in PostGis database
 
     return jsonify({'message': 'Fire report updated successfully'})
+
+@app.route('/news', methods=['GET'])
+def get_news():
+    articles = get_top_wildfire_headlines()
+    print(articles)
+    return jsonify(articles)
 
 if __name__ == '__main__':
     app.run(debug=True)
