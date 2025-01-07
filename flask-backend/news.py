@@ -16,7 +16,7 @@ def get_top_wildfire_headlines():
         "q": query_string,
         "searchIn": "title,description",  # <--- Only search in title + description
         "language": "en",
-        "pageSize": 10,
+        "pageSize": 12,
         "sortBy": "relevancy",
         "apiKey": newsapikey
     }

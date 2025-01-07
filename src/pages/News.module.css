@@ -1,0 +1,5 @@
+.newsCardFlex {
+    flex-direction: row;
+    display: flex;
+    flex-wrap: wrap;
+}

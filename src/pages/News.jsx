@@ -1,7 +1,7 @@
 import styles from './News.module.css';
 import { useState, useEffect } from 'react';
 import axios from "axios";
-
+import NewsCard from '../components/NewsCard';
 
 const News = () => {
 
@@ -14,9 +14,8 @@ const News = () => {
         axios.get("http://localhost:5000/news")
             .then((response) => {
                 console.log("Succesfully retrieved news data");
-                console.log(response.data);
-                setNewsData(response.data);
-
+                console.log(response.data.articles);
+                setNewsData(response.data.articles);
             }
             )
             .catch((error) => {
@@ -24,12 +23,29 @@ const News = () => {
             }
             )
 
-        
-
     }, []);
 
     return (
-        <h1>Top Wildfire News</h1>
+        <>
+            <h1>Top Wildfire News</h1>
+            <div className={styles.newsCardFlex}>
+            {newsData ? (
+                newsData.map((article, index) => (
+                    <NewsCard
+                        key={index}
+                        title={article.title}
+                        description={article.description}
+                        publishedAt={article.publishedAt}
+                        url={article.url}
+                        urlToImage={article.urlToImage}
+                        source={article.source.name}
+                    />
+                ))
+            ) : (
+                <p>Loading...</p>
+            )}
+            </div>
+        </>
     )
 }
 
