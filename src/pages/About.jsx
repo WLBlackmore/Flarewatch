@@ -1,10 +1,12 @@
 import React from "react";
+import styles from "./About.module.css";
 
 const About = () => {
   return (
-    <div>
-      <h1>Welcome to the Wildfire Dashboard</h1>
-      <p>This is the about page.</p>
+    <div className={styles.container}>
+      <h1 className={styles.heading}>About</h1>
+      <hr />
+      
     </div>
   );
 };
