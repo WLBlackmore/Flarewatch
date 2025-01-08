@@ -1,5 +1,46 @@
-.newsCardFlex {
-    flex-direction: row;
-    display: flex;
-    flex-wrap: wrap;
-}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+  }
+  
+
+  .heading {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    letter-spacing: 1px;
+  }
+  
+
+  .subheading {
+    text-align: center;
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
+    color: #ccc;
+  }
+
+  .newsCardGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 1.5rem;
+    align-items: stretch;
+  }
+  
+  hr {
+    margin: 2rem auto;
+    width: 60%;
+    border: 1px solid #444;
+  }
+  
+  body {
+    background: linear-gradient(120deg, #333 0%, #111 100%);
+    margin: 0;
+    padding: 0;
+  }
+
+  h1 {
+    color: #fff;
+  }
+  

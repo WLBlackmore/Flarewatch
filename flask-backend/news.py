@@ -18,6 +18,7 @@ def get_top_wildfire_headlines():
         "language": "en",
         "pageSize": 12,
         "sortBy": "relevancy",
+        "excludeDomains": "biztoc.com",
         "apiKey": newsapikey
     }
 
