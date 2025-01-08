@@ -13,8 +13,8 @@ const News = () => {
         axios.get("http://localhost:5000/news")
             .then((response) => {
                 console.log("Successfully retrieved news data");
-                console.log(response.data.articles);
-                setNewsData(response.data.articles);
+                console.log(response.data);
+                setNewsData(response.data);
             })
             .catch((error) => {
                 console.log("Error retrieving news data, ", error);
